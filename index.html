@@ -11,14 +11,14 @@
     <meta name="robots" content="index, follow">
     <meta name="author" content="더 웰 서비스">
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="public/favicon-32.png">
-    <link rel="apple-touch-icon" href="public/favicon-32.png">
-    <link rel="shortcut icon" href="public/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./public/favicon-32.png">
+    <link rel="apple-touch-icon" href="./public/favicon-32.png">
+    <link rel="shortcut icon" href="./public/favicon-32.png">
     <!-- OpenGraph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="더 웰 서비스 | 프리미엄 종합 청소 선두주자">
     <meta property="og:description" content="준공청소, 상가·바닥·유리·카펫·외벽 정밀 청소 전문. 더 웰 서비스의 8단계 정밀 시스템으로 빈틈없는 청결을 약속드립니다.">
-    <meta property="og:image" content="public/images/logo_transparent.png">
+    <meta property="og:image" content="./public/images/logo_transparent.png">
     <meta property="og:locale" content="ko_KR">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -295,44 +295,57 @@
             .brand-icon-subtitle {
                 display: block;
             }
-        /* Ken Burns Effect */
-        @keyframes kenburns {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.15) translate(-1%, -1%); }
-        }
 
-        .animate-kenburns {
-            animation: kenburns 40s ease-out infinite alternate;
-        }
+            /* Ken Burns Effect */
+            @keyframes kenburns {
+                0% {
+                    transform: scale(1) translate(0, 0);
+                }
 
-        /* Premium Glow */
-        .text-glow {
-            text-shadow: 0 0 20px rgba(16, 185, 129, 0.4), 0 0 40px rgba(16, 185, 129, 0.2);
-        }
+                100% {
+                    transform: scale(1.15) translate(-1%, -1%);
+                }
+            }
 
-        .btn-glass {
-            background: rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
+            .animate-kenburns {
+                animation: kenburns 40s ease-out infinite alternate;
+            }
 
-        .btn-glass:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
+            /* Premium Glow */
+            .text-glow {
+                text-shadow: 0 0 20px rgba(16, 185, 129, 0.4), 0 0 40px rgba(16, 185, 129, 0.2);
+            }
 
-        /* Quick Menu Animation */
-        @keyframes slideInRight {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
+            .btn-glass {
+                background: rgba(0, 0, 0, 0.25);
+                backdrop-filter: blur(15px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            }
 
-        .animate-slide-in-right {
-            animation: slideInRight 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-        }
+            .btn-glass:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.5);
+                transform: translateY(-4px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Quick Menu Animation */
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100px);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            .animate-slide-in-right {
+                animation: slideInRight 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            }
     </style>
 </head>
 
@@ -368,10 +381,10 @@
                         <div onClick={() => handleNav('/')} onDoubleClick={(e) => { e.preventDefault(); onAdminTrigger && onAdminTrigger(); }} className="relative flex items-center cursor-pointer group py-2 md:py-3 px-4 md:px-6 -ml-4 md:-ml-6" title="">
                             {/* Wiper Squeegee Swipe Background for entire Logo Lockup */}
                             <div className={`absolute inset-0 bg-white/95 -skew-x-[15deg] rounded-sm shadow-md transition-all duration-700 ${isTransparent ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'} -z-10`}></div>
-                            
+
                             <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center group overflow-visible">
                                 <div className={`absolute inset-0 bg-[#065f46] rounded-full blur-2xl transition-opacity duration-1000 ${isAdmin ? 'opacity-30 mix-blend-screen' : 'opacity-0 group-hover:opacity-10'} `}></div>
-                                <img src="public/images/logo_transparent.png" alt="THE WELL SERVICE 로고" className="w-[120%] h-[120%] relative z-10 transition-transform duration-700 group-hover:scale-110 object-contain drop-shadow-sm" />
+                                <img src="./public/images/logo_transparent.png" alt="THE WELL SERVICE 로고" className="w-[120%] h-[120%] relative z-10 transition-transform duration-700 group-hover:scale-110 object-contain drop-shadow-sm" />
                             </div>
 
                             <div className="flex flex-col items-center ml-3 md:ml-4 z-20 whitespace-nowrap overflow-visible">
@@ -445,9 +458,9 @@
             <section id="home" className="relative min-h-[90vh] md:h-screen flex items-center justify-center overflow-hidden pt-24 md:pt-20">
                 {/* 배경 이미지 및 오버레이 강화 (Clean Bright Effect 적용) */}
                 <div className="absolute inset-0 z-0 overflow-hidden">
-                    <img 
-                        src={`public/images/hero_bg.jpg?t=${Date.now()}`} 
-                        alt="더 웰 서비스 작업 현장" 
+                    <img
+                        src={`./public/images/hero_bg.jpg?t=${Date.now()}`}
+                        alt="더 웰 서비스 작업 현장"
                         className="w-full h-full object-cover brightness-[0.80] contrast-[1.1] saturate-[1.05] animate-kenburns"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-900/95 via-slate-900/40 to-slate-900/95"></div>
@@ -593,8 +606,8 @@
 
             const handleLookup = (e) => {
                 e.preventDefault();
-                const match = reviews.find(r => 
-                    r.name.trim() === lookupForm.name.trim() && 
+                const match = reviews.find(r =>
+                    r.name.trim() === lookupForm.name.trim() &&
                     String(r.password) === String(lookupForm.password)
                 );
                 if (match) {
@@ -612,7 +625,7 @@
                 let updated;
                 const now = new Date();
                 const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                
+
                 if (editingId) {
                     updated = reviews.map(r => String(r.id) === String(editingId) ? { ...r, ...form } : r);
                 } else {
@@ -771,7 +784,7 @@
                                     <button onClick={closeDetail} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:bg-[#ecfdf5] hover:text-[#10b981] transition-all">
                                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" /></svg>
                                     </button>
-                                    
+
                                     <div className="mb-8">
                                         <div className="flex gap-1 text-[#fbbf24] mb-4">
                                             {[...Array(5)].map((_, idx) => <svg key={idx} className={`w-5 h-5 ${idx < (selectedDetail.rating || 5) ? 'fill-current' : 'fill-gray-200'}`} viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}
@@ -799,7 +812,7 @@
                                                 <p className="text-gray-400 text-[11px] font-bold tracking-tight">{selectedDetail.company}</p>
                                             </div>
                                         </div>
-                                        
+
                                         {(isAdmin || selectedDetail.isUser) && (
                                             <div className="flex gap-2">
                                                 <button onClick={() => handleEditRequest(selectedDetail)} className="px-4 py-2 rounded-xl bg-gray-50 text-gray-500 font-bold text-xs hover:bg-[#ecfdf5] hover:text-[#065f46] transition-all">수정</button>
@@ -938,11 +951,11 @@
             useEffect(() => { if (!isAdmin) setEditMode(false); }, [isAdmin]);
 
             const defaultImages = [
-                'public/images/step_1_custom.png?t=' + Date.now(), // STEP 01
-                'public/images/step_2_custom.png?t=' + Date.now(), // STEP 02
-                'public/images/step_3_custom.png?t=' + Date.now(), // STEP 03
-                'public/images/step_4_custom.png?t=' + Date.now(), // STEP 04
-                'public/images/step_5_custom.png?t=' + Date.now(), // STEP 05
+                './public/images/step_1_custom.png?t=' + Date.now(), // STEP 01
+                './public/images/step_2_custom.png?t=' + Date.now(), // STEP 02
+                './public/images/step_3_custom.png?t=' + Date.now(), // STEP 03
+                './public/images/step_4_custom.png?t=' + Date.now(), // STEP 04
+                './public/images/step_5_custom.png?t=' + Date.now(), // STEP 05
                 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800', // STEP 06 (Quota fallback)
                 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&q=80&w=800', // STEP 07 (Quota fallback)
                 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800', // STEP 08 (Quota fallback)
@@ -1226,10 +1239,10 @@
 
         const Services = () => {
             const serviceList = [
-                { title: '준공 청소', desc: '시공 후 남은 분진과 유해물질 완벽 제거', img: 'public/images/uploaded_service_new.jpg', icon: null },
-                { title: '바닥 청소', desc: '전문 장비와 약품으로 바닥 찌든 때 제거 및 코팅', img: 'public/images/uploaded_service_floor_new.jpg', icon: null },
-                { title: '외벽 청소', desc: '건물 외관의 오염물을 제거하여 빌딩 가치 상승', img: 'public/images/uploaded_service_exterior_new.jpg', icon: null },
-                { title: '유리 청소', desc: '얼룩 없이 투명한 시야 확보를 위한 특수 클리닝', img: 'public/images/uploaded_service_glass_new.jpg', icon: null }
+                { title: '준공 청소', desc: '시공 후 남은 분진과 유해물질 완벽 제거', img: './public/images/uploaded_service_new.jpg', icon: null },
+                { title: '바닥 청소', desc: '전문 장비와 약품으로 바닥 찌든 때 제거 및 코팅', img: './public/images/uploaded_service_floor_new.jpg', icon: null },
+                { title: '외벽 청소', desc: '건물 외관의 오염물을 제거하여 빌딩 가치 상승', img: './public/images/uploaded_service_exterior_new.jpg', icon: null },
+                { title: '유리 청소', desc: '얼룩 없이 투명한 시야 확보를 위한 특수 클리닝', img: './public/images/uploaded_service_glass_new.jpg', icon: null }
             ];
             return (
                 <section id="services" className="py-16 md:py-24 bg-white relative">
@@ -1258,10 +1271,10 @@
 
         const PortfolioBoard = ({ onCategorySelect }) => {
             const categories = [
-                { id: '준공-청소', name: '준공 청소', desc: '인테리어 시공 및 입주 전 필수 초정밀 클리닝', img: 'public/images/port-main-1.jpg' },
-                { id: '바닥-청소', name: '바닥 청소', desc: '특수 장비를 활용한 찌든 때 제거 및 고광택 왁싱 코팅', img: 'public/images/port-main-2.jpg' },
-                { id: '외벽-청소', name: '외벽 청소', desc: '산성비로 부식되고 오염된 건축물 마감재 복원 및 정밀 세척', img: 'public/images/port-main-4.jpg' },
-                { id: '유리-청소', name: '유리 청소', desc: '얼룩 없는 최상의 시야를 보장하는 고층 특수 투명창 시공', img: 'public/images/port-main-3.jpg' },
+                { id: '준공-청소', name: '준공 청소', desc: '인테리어 시공 및 입주 전 필수 초정밀 클리닝', img: './public/images/port-main-1.jpg' },
+                { id: '바닥-청소', name: '바닥 청소', desc: '특수 장비를 활용한 찌든 때 제거 및 고광택 왁싱 코팅', img: './public/images/port-main-2.jpg' },
+                { id: '외벽-청소', name: '외벽 청소', desc: '산성비로 부식되고 오염된 건축물 마감재 복원 및 정밀 세척', img: './public/images/port-main-4.jpg' },
+                { id: '유리-청소', name: '유리 청소', desc: '얼룩 없는 최상의 시야를 보장하는 고층 특수 투명창 시공', img: './public/images/port-main-3.jpg' },
             ];
             return (
                 <section id="portfolio" className="py-16 md:py-24 bg-gray-50 relative border-t border-gray-100 reveal">
@@ -1646,7 +1659,7 @@
                     const isAdmin = sessionStorage.getItem('wellservice_admin') === 'true';
                     const response = await fetch(this.apiUrl, {
                         method: 'POST',
-                        headers: { 
+                        headers: {
                             'Content-Type': 'application/json',
                             'X-Admin-Password': isAdmin ? (localStorage.getItem('wellservice_admin_pwd') || '0000') : ''
                         },
@@ -1730,10 +1743,10 @@
                 // Read full DB first to preserve other stores
                 const fullData = await this.loadAll();
                 fullData[storeName] = updatedArray;
-                
+
                 // Save locally
                 await this.saveLocal(storeName, updatedArray);
-                
+
                 // Push to server
                 return await this.pushToServer(fullData);
             }
@@ -1744,17 +1757,17 @@
 
             const seedPosts = useMemo(() => [
                 {
-                    id: 1, category: '준공-청소', title: `[준공 청소] 첫 번째 프리미엄 현장`, content: `더 웰 서비스만의 독보적인 8단계 세척 시스템을 적용한 대표 사례입니다. 대형 창호와 특수 바닥재의 오염을 완벽하게 제거하여 본래의 광택을 되찾아드렸습니다. 상세 리포트에서 작업 전후의 놀라운 변화를 확인하세요.`, date: '2026.03.20', img: 'public/images/port-main-1.jpg',
+                    id: 1, category: '준공-청소', title: `[준공 청소] 첫 번째 프리미엄 현장`, content: `더 웰 서비스만의 독보적인 8단계 세척 시스템을 적용한 대표 사례입니다. 대형 창호와 특수 바닥재의 오염을 완벽하게 제거하여 본래의 광택을 되찾아드렸습니다. 상세 리포트에서 작업 전후의 놀라운 변화를 확인하세요.`, date: '2026.03.20', img: './public/images/port-main-1.jpg',
                     detail: {
-                        before: [{ url: 'public/images/port-main-1.jpg', posX: 50, posY: 50 }],
+                        before: [{ url: './public/images/port-main-1.jpg', posX: 50, posY: 50 }],
                         during: [{ url: 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&q=80&w=1200', posX: 50, posY: 50 }],
                         after: [{ url: 'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80&w=1200', posX: 50, posY: 50 }]
                     }
                 },
                 {
-                    id: 2, category: '바닥-청소', title: `[바닥 청소] 두 번째 디테일 작업 완료`, content: `정밀 바닥 세척과 왁스 코팅을 통해 공간의 위생 등급을 한 차원 높인 현장입니다. 특수 장비를 활용하여 찌든 때를 뿌리까지 제거했습니다.`, date: '2026.03.15', img: 'public/images/port-main-2.jpg',
+                    id: 2, category: '바닥-청소', title: `[바닥 청소] 두 번째 디테일 작업 완료`, content: `정밀 바닥 세척과 왁스 코팅을 통해 공간의 위생 등급을 한 차원 높인 현장입니다. 특수 장비를 활용하여 찌든 때를 뿌리까지 제거했습니다.`, date: '2026.03.15', img: './public/images/port-main-2.jpg',
                     detail: {
-                        before: [{ url: 'public/images/port-main-2.jpg', posX: 50, posY: 50 }],
+                        before: [{ url: './public/images/port-main-2.jpg', posX: 50, posY: 50 }],
                         during: [],
                         after: [{ url: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1200', posX: 50, posY: 50 }]
                     }
@@ -1769,7 +1782,7 @@
                     try {
                         const fullData = await TheWellDB.loadAll();
                         let data = fullData.portfolio || [];
-                        
+
                         if (data.length === 0) {
                             // Check for legacy localStorage data
                             const legacy = localStorage.getItem('wellservice_portfolio_v1');
@@ -1803,7 +1816,7 @@
             useEffect(() => { window.scrollTo(0, 0); setActiveIndex(0); }, [category]);
 
             const activePost = posts[activeIndex];
-            
+
             const stageSequence = useMemo(() => {
                 if (!activePost || !activePost.detail) return ['after'];
                 const seq = [];
@@ -1913,7 +1926,7 @@
                 if (!formData.title.trim()) return;
                 setIsUploading(true);
                 try {
-                    const fallbackImg = posts.length > 0 ? posts[0].img : 'public/images/port-main-1.jpg';
+                    const fallbackImg = posts.length > 0 ? posts[0].img : './public/images/port-main-1.jpg';
                     const detailImgs = {
                         before: filesData.before.map(f => ({ url: f.url, posX: f.posX || 50, posY: f.posY || 50 })),
                         during: filesData.during.map(f => ({ url: f.url, posX: f.posX || 50, posY: f.posY || 50 })),
@@ -1980,7 +1993,7 @@
 
 
                                 {/* 왼쪽 이미지 영역 */}
-                                <div className={`w-full lg:w-[60%] min-h-[400px] lg:h-auto relative overflow-hidden bg-gray-900 flex-shrink-0 group/slider cursor-pointer`} 
+                                <div className={`w-full lg:w-[60%] min-h-[400px] lg:h-auto relative overflow-hidden bg-gray-900 flex-shrink-0 group/slider cursor-pointer`}
                                     onClick={nextImage}>
                                     <div
                                         className="absolute inset-0 w-full h-full transition-all duration-1000 group-hover/slider:scale-[1.05]"
@@ -1997,7 +2010,7 @@
                                             <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 flex items-center gap-2 shadow-lg">
                                                 <div className="w-1.5 h-1.5 bg-[#10b981] rounded-full animate-pulse"></div>
                                                 <span className="text-white font-black text-[10px] md:text-xs uppercase tracking-tighter">
-                                                    {stage === 'before' ? '작업 전' : stage === 'during' ? '작업 중' : '작업 후'} 
+                                                    {stage === 'before' ? '작업 전' : stage === 'during' ? '작업 중' : '작업 후'}
                                                     {currentDetailImages.length > 1 && ` (${imgIndex + 1}/${currentDetailImages.length})`}
                                                 </span>
                                             </div>
@@ -2006,21 +2019,21 @@
 
 
                                     {stageSequence.length > 1 && (
-                                         <React.Fragment>
-                                             <button onClick={prevImage} className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 hover:bg-[#10b981] text-white rounded-full flex items-center justify-center backdrop-blur-md opacity-0 group-hover/slider:opacity-100 transition-all z-40">
-                                                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" /></svg>
-                                             </button>
-                                             <button onClick={nextImage} className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 hover:bg-[#10b981] text-white rounded-full flex items-center justify-center backdrop-blur-md opacity-0 group-hover/slider:opacity-100 transition-all z-40">
-                                                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" /></svg>
-                                             </button>
-                                         </React.Fragment>
-                                     )}
+                                        <React.Fragment>
+                                            <button onClick={prevImage} className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 hover:bg-[#10b981] text-white rounded-full flex items-center justify-center backdrop-blur-md opacity-0 group-hover/slider:opacity-100 transition-all z-40">
+                                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" /></svg>
+                                            </button>
+                                            <button onClick={nextImage} className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 hover:bg-[#10b981] text-white rounded-full flex items-center justify-center backdrop-blur-md opacity-0 group-hover/slider:opacity-100 transition-all z-40">
+                                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" /></svg>
+                                            </button>
+                                        </React.Fragment>
+                                    )}
                                 </div>
 
                                 {/* 오른쪽 정보 패널 */}
                                 <div className="w-full lg:w-[40%] flex flex-col bg-white relative">
                                     <div className="p-10 lg:p-12 flex-grow overflow-y-auto custom-scrollbar active-info-scroll border-b border-gray-50">
-                                        
+
                                         <div className="flex justify-between items-center mb-8 sticky top-0 bg-white/95 backdrop-blur-sm z-30 py-2 -mx-4 px-4">
                                             <span className="bg-gray-100 text-gray-500 font-extrabold text-[10px] px-3 py-1 rounded-md tracking-widest uppercase">
                                                 DETAILED REPORT
@@ -2046,7 +2059,7 @@
 
                                         <h2 className="text-3xl lg:text-4xl font-black text-gray-900 mb-8 leading-[1.2] break-keep">{activePost.title}</h2>
                                         <div className="w-16 h-1.5 bg-[#10b981] mb-10 rounded-full"></div>
-                                        
+
                                         <div className="prose prose-sm lg:prose-base text-gray-500 font-bold leading-relaxed whitespace-pre-wrap break-keep active-content-area transition-all duration-700 opacity-100 translate-y-0">
                                             {activePost.content}
                                         </div>
@@ -2061,12 +2074,12 @@
                                             </div>
                                         )}
                                     </div>
-                                    
+
                                     {/* 하단 썸네일 리스트 */}
                                     <div className="h-40 lg:h-44 bg-gray-50/50 p-6 flex space-x-5 items-center overflow-x-auto custom-scrollbar border-t border-gray-100">
                                         {posts.map((post, idx) => (
                                             <button key={post.id} onClick={() => { setActiveIndex(idx); setStage('after'); setImgIndex(0); }} className={`relative w-28 h-28 lg:w-32 lg:h-32 flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-500 transform hover:translate-y-[-4px] ${activeIndex === idx ? 'ring-[6px] ring-[#10b981] ring-offset-2 scale-105 z-10 shadow-2xl' : 'opacity-40 grayscale-[0.5] hover:opacity-100 hover:grayscale-0'}`}>
-                                                <img src={post.img} className="w-full h-full object-cover" alt={`Case-${idx+1}`} />
+                                                <img src={post.img} className="w-full h-full object-cover" alt={`Case-${idx + 1}`} />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                                                 <div className="absolute bottom-2 right-2 w-8 h-8 bg-[#10b981] text-white flex items-center justify-center rounded-full text-[13px] font-black shadow-lg ring-2 ring-white animate-bounce-slow">{idx + 1}</div>
                                             </button>
@@ -2467,7 +2480,7 @@
                                     <div className="relative w-32 h-32 md:w-40 md:h-40 flex items-center justify-center p-6">
                                         <div className="absolute inset-0 bg-white/95 -skew-x-[15deg] rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.6)] transition-transform duration-1000 group-hover:scale-105 -z-10 border border-white/20"></div>
                                         <div className="absolute inset-0 bg-[#10b981]/20 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-1000 z-0"></div>
-                                        <img src="public/images/logo_transparent.png" alt="THE WELL SERVICE 로고" className="w-[100%] h-[100%] object-contain group-hover:scale-110 transition-transform duration-700 relative z-10 drop-shadow-sm" />
+                                        <img src="./public/images/logo_transparent.png" alt="THE WELL SERVICE 로고" className="w-[100%] h-[100%] object-contain group-hover:scale-110 transition-transform duration-700 relative z-10 drop-shadow-sm" />
                                     </div>
                                 </div>
                                 <h4 className="text-white text-xl md:text-2xl font-black mb-3 tracking-tighter">THE WELL SERVICE</h4>
