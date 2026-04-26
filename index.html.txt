@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ë” ì›° ì„œë¹„ìŠ¤ | í”„ë¦¬ë¯¸ì—„ ê³µê°„ ê´€ë¦¬ ì†”ë£¨ì…˜</title>
+    <!-- React & Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* index.css Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+        
+        :root {
+            --brand-green: #22c55e;
+            --brand-green-light: #4ade80;
+            --brand-green-dark: #16a34a;
+            --brand-green-deep: #064e3b;
+            --brand-accent-lime: #a3e635;
+            --brand-navy: #1e3a5f;
+            --brand-navy-light: #93c5fd;
+            --brand-coral: #f97316;
+            --luxury-gold: #c5a059;
+            --luxury-charcoal: #1a1a1a;
+        }
+
+        /* Tailwind Configuration Simulation */
+        body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; color: #333333; scroll-behavior: smooth; }
+        .text-brand-green { color: var(--brand-green); }
+        .bg-brand-green { background-color: var(--brand-green); }
+        .text-brand-green-deep { color: var(--brand-green-deep); }
+        .bg-brand-green-deep { background-color: var(--brand-green-deep); }
+        .text-luxury-gold { color: var(--luxury-gold); }
+        .bg-luxury-gold { background-color: var(--luxury-gold); }
+        .text-brand-coral { color: var(--brand-coral); }
+        .bg-brand-coral { background-color: var(--brand-coral); }
+
+        @keyframes luxury-fade {
+            0% { opacity: 0; filter: blur(20px) brightness(1.5); transform: scale(1.1); }
+            100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1); }
+        }
+        @keyframes luxury-slide {
+            0% { opacity: 0; transform: translateX(50px); filter: blur(10px); }
+            100% { opacity: 1; transform: translateX(0); filter: blur(0); }
+        }
+        .animate-luxury-fade { animation: luxury-fade 0.8s cubic-bezier(0.6, 0.01, 0.05, 0.95) forwards; }
+        .animate-luxury-slide { animation: luxury-slide 0.6s cubic-bezier(0.6, 0.01, 0.05, 0.95) 0.1s forwards; }
+
+        .glossy-green {
+            background: linear-gradient(135deg, var(--brand-green-light) 0%, var(--brand-green) 50%, var(--brand-green-dark) 100%);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), 0 10px 20px rgba(34, 197, 94, 0.2);
+            position: relative; overflow: hidden;
+        }
+        .glossy-green-deep {
+            background: linear-gradient(135deg, var(--brand-green) 0%, var(--brand-green-dark) 50%, var(--brand-green-deep) 100%);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 10px 30px rgba(6, 78, 59, 0.15);
+            position: relative; overflow: hidden;
+        }
+        .glossy-shine::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: skewX(-25deg); transition: 0.75s;
+        }
+        .glossy-shine:hover::after { left: 200%; }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+        
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useRef } = React;
+
+        const Header = ({ onNavigate, isHome }) => {
+            const [isScrolled, setIsScrolled] = useState(false);
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setIsScrolled(window.scrollY > 20);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+            const handleNav = (hash) => {
+                onNavigate(hash);
+                setIsMenuOpen(false);
+            };
+
+            return (
+                <header className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled || !isHome ? 'bg-white/90 backdrop-blur-md shadow-lg py-3 border-b border-[#c5a059]/20' : 'bg-transparent py-6'}`}>
+                    <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+                        <div onClick={() => handleNav('/')} className="flex items-center space-x-3 cursor-pointer group">
+                            <div className="w-10 h-10 glossy-green rounded-xl flex items-center justify-center text-white font-extrabold text-xl shadow-md transition-transform group-hover:scale-105 border border-white/20">W</div>
+                            <span className="text-xl md:text-2xl font-extrabold tracking-tight transition-colors duration-300 text-[#22c55e]">ë” ì›° ì„œë¹„ìŠ¤</span>
+                        </div>
+                        
+                        {/* Desktop Nav */}
+                        <nav className="hidden md:flex space-x-10 font-bold text-gray-700 tracking-tight cursor-pointer">
+                            <a onClick={() => onNavigate('#brand-story')} className="hover:text-[#064e3b] transition-all duration-300 relative group">ë¸Œëžœë“œ ìŠ¤í† ë¦¬<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#c5a059] transition-all group-hover:w-full"></span></a>
+                            <a onClick={() => onNavigate('#services')} className="hover:text-[#064e3b] transition-all duration-300 relative group">ì„œë¹„ìŠ¤ ì†Œê°œ<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#c5a059] transition-all group-hover:w-full"></span></a>
+                            <a onClick={() => onNavigate('#portfolio')} className="hover:text-[#064e3b] transition-all duration-300 relative group">í¬íŠ¸í´ë¦¬ì˜¤<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#c5a059] transition-all group-hover:w-full"></span></a>
+                            <a onClick={() => onNavigate('#reviews')} className="hover:text-[#064e3b] transition-all duration-300 relative group">ê³ ê° í›„ê¸°<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#c5a059] transition-all group-hover:w-full"></span></a>
+                            <a onClick={() => onNavigate('#quote')} className="hover:text-[#064e3b] transition-all duration-300 relative group">ë¬´ë£Œ ê²¬ì  ì‹ ì²­<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#c5a059] transition-all group-hover:w-full"></span></a>
+                        </nav>
+
+                        {/* Mobile Menu Button */}
+                        <button onClick={toggleMenu} className="md:hidden w-10 h-10 flex flex-col items-center justify-center space-y-1.5 focus:outline-none z-[110]" aria-label="ë©”ë‰´ ì—´ê¸°">
+                            <span className={`w-6 h-0.5 bg-gray-800 transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+                            <span className={`w-6 h-0.5 bg-gray-800 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+                            <span className={`w-6 h-0.5 bg-gray-800 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+                        </button>
+                    </div>
+
+                    {/* Mobile Menu Overlay */}
+                    <div className={`fixed inset-0 bg-white z-[10000] transition-all duration-500 ease-in-out md:hidden ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+                        <div className="flex flex-col items-center justify-center h-full space-y-10 p-6">
+                            <button onClick={() => setIsMenuOpen(false)} className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:text-gray-900 transition-colors">
+                                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                            <a onClick={() => handleNav('#brand-story')} className="text-2xl font-black text-gray-900 border-b-2 border-transparent hover:border-[#22c55e] transition-all">ë¸Œëžœë“œ ìŠ¤í† ë¦¬</a>
+                            <a onClick={() => handleNav('#services')} className="text-2xl font-black text-gray-900 border-b-2 border-transparent hover:border-[#22c55e] transition-all">ì„œë¹„ìŠ¤ ì†Œê°œ</a>
+                            <a onClick={() => handleNav('#portfolio')} className="text-2xl font-black text-gray-900 border-b-2 border-transparent hover:border-[#22c55e] transition-all">í¬íŠ¸í´ë¦¬ì˜¤</a>
+                            <a onClick={() => handleNav('#reviews')} className="text-2xl font-black text-gray-900 border-b-2 border-transparent hover:border-[#22c55e] transition-all">ê³ ê° í›„ê¸°</a>
+                            <a onClick={() => handleNav('#quote')} className="text-2xl font-black text-gray-900 border-b-2 border-transparent hover:border-[#22c55e] transition-all">ë¬´ë£Œ ê²¬ì  ì‹ ì²­</a>
+                            <div className="pt-8">
+                                <a href="tel:16888740" className="flex items-center space-x-3 text-[#22c55e] font-black text-xl bg-green-50 px-8 py-4 rounded-2xl shadow-md">
+                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                    <span>1688-8740</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            );
+        };
+
+        const Hero = ({ onNavigate }) => (
+            <section id="home" className="relative min-h-[90vh] md:h-screen flex items-center justify-center overflow-hidden bg-white pt-24 md:pt-20">
+                <div className="absolute inset-0 w-full h-full overflow-hidden z-0 pointer-events-none bg-white">
+                    <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_70%_30%,#f0fdf4_0%,transparent_50%)] opacity-40"></div>
+                </div>
+                <div className="relative z-10 max-w-5xl mx-auto px-6 flex flex-col items-center text-center mt-12 md:mt-10">
+                    <div className="flex items-center space-x-3 md:space-x-4 mb-8 md:mb-10">
+                        <div className="hidden sm:block w-8 md:w-12 h-[1px] bg-[#c5a059] opacity-50"></div>
+                        <span className="inline-block py-1.5 px-4 md:px-5 rounded-full bg-gray-800 text-white font-bold text-[9px] md:text-xs tracking-[0.12em] md:tracking-[0.2em] uppercase shadow-xl">PROFESSIONAL SPACE MANAGEMENT GROUP</span>
+                        <div className="hidden sm:block w-8 md:w-12 h-[1px] bg-[#c5a059] opacity-50"></div>
+                    </div>
+                    <h1 className="text-[26px] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.35] md:leading-[1.2] mb-8 md:mb-10 tracking-tight break-keep">
+                        ê³µê°„ì˜ ê°€ì¹˜ëŠ” <span className="text-[#22c55e]">ë¨¸ë¬´ëŠ” ì‚¬ëžŒ</span>ìœ¼ë¡œë¶€í„°,<br className="sm:hidden" /> <span className="text-[#22c55e]">ë” ì›° ì„œë¹„ìŠ¤</span>ê°€ ê·¸ ê°€ì¹˜ë¥¼ ì™„ì„±í•©ë‹ˆë‹¤
+                    </h1>
+                    <p className="text-sm sm:text-lg md:text-xl text-gray-500 mb-10 md:mb-14 max-w-2xl font-medium leading-relaxed break-keep">ì¤€ê³µÂ·ë°”ë‹¥Â·ìœ ë¦¬Â·ì™¸ë²½ ì „ë¬¸ ê´€ë¦¬ ì†”ë£¨ì…˜.<br className="hidden md:block" />ìˆ™ë ¨ëœ ì „ë¬¸ê°€ë“¤ì˜ ìœ ê¸°ì ì¸ íŒ€ì›Œí¬ë¡œ ê³µê°„ ë³¸ì—°ì˜ ë¹›ì„ ì¦ëª…í•©ë‹ˆë‹¤.</p>
+                    <div className="flex flex-wrap items-center justify-center w-full gap-3 md:gap-5">
+                        <a onClick={() => onNavigate('#brand-story')} className="bg-white text-gray-700 px-4 md:px-8 py-2.5 md:py-4 rounded-xl font-bold text-xs md:text-base border border-gray-100 shadow-sm hover:bg-gray-50 transition-all transform hover:-translate-y-0.5 duration-300 cursor-pointer">ë¸Œëžœë“œ ìŠ¤í† ë¦¬</a>
+                        <a onClick={() => onNavigate('#services')} className="bg-white text-gray-700 px-4 md:px-8 py-2.5 md:py-4 rounded-xl font-bold text-xs md:text-base border border-gray-100 shadow-sm hover:bg-gray-50 transition-all transform hover:-translate-y-0.5 duration-300 cursor-pointer">ì„œë¹„ìŠ¤ ì†Œê°œ</a>
+                        <a onClick={() => onNavigate('#quote')} className="glossy-green glossy-shine text-white px-4 md:px-10 py-2.5 md:py-4 rounded-xl font-bold text-xs md:text-base shadow-lg hover:shadow-green-200 transition-all transform hover:-translate-y-0.5 duration-300 cursor-pointer">ë¬´ë£Œ ê²¬ì  ì‹ ì²­</a>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const BrandStory = () => (
+            <section id="brand-story" className="py-16 md:py-24 bg-white relative">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <div className="flex justify-center items-center space-x-3 mb-4">
+                            <div className="w-8 h-[1px] bg-[#c5a059]"></div>
+                            <span className="text-[#c5a059] font-bold text-xs tracking-[0.3em] uppercase">ë” ì›° ì„œë¹„ìŠ¤ì˜ ê²½ì˜ ì² í•™</span>
+                            <div className="w-8 h-[1px] bg-[#c5a059]"></div>
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 mb-5 tracking-tight break-keep">ê³µê°„ì˜ ë³¸ì§ˆì„ ì„¸ìš°ê³ , <br className="sm:hidden"/><span className="text-[#064e3b]">ë¨¸ë¬´ëŠ” ì´ì˜ ê±´ê°•ì„ ì™„ì„±í•©ë‹ˆë‹¤.</span></h2>
+                        <div className="w-16 h-1 bg-gray-100 mx-auto rounded-full mb-8"></div>
+                        <p className="text-lg sm:text-xl lg:text-2xl font-black text-gray-800 tracking-tight break-keep max-w-3xl mx-auto leading-tight">"ì „ë¬¸ê°€ë“¤ì˜ ì •êµí•œ ì‹œìŠ¤í…œìœ¼ë¡œ ë¹šì–´ë‚¸ <br className="sm:hidden" />ê°€ìž¥ ê±´ê°•í•œ 'Well-being' ê³µê°„"</p>
+                    </div>
+                    <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+                        <div className="lg:col-span-7 space-y-10">
+                            <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-14 border border-gray-100 shadow-[0_10px_50px_rgb(0,0,0,0.04)] relative overflow-hidden">
+                                <div className="absolute top-0 left-0 w-1 h-32 bg-[#c5a059]"></div>
+                                <div className="space-y-6 md:space-y-8 text-gray-700 text-base md:text-lg leading-[1.7] md:leading-[1.8] font-medium break-keep relative z-10">
+                                    <p>ìš°ë¦¬ê°€ ì •ì˜í•˜ëŠ” ì²­ì†ŒëŠ” ë‹¨ìˆœí•œ ì˜¤ì—¼ ì œê±°ê°€ ì•„ë‹™ë‹ˆë‹¤.<br />ê±´ì¶•ë¬¼ì´ ê°€ì§„ ë³¸ì—°ì˜ ë¹›ì„ ë˜ì°¾ì•„ì£¼ëŠ” ë™ì‹œì—, ê·¸ ì•ˆì—ì„œ ìˆ¨ ì‰¬ëŠ” ì‚¬ëžŒë“¤ì˜ <strong className="text-[#064e3b] font-black">{'\'ê±´ê°•í•œ ì‚¶(Well-being)\''}</strong>ì„ ì„¤ê³„í•˜ëŠ” ì¼ìž…ë‹ˆë‹¤.</p>
+                                    <p>ë” ì›° ì„œë¹„ìŠ¤ëŠ” ëˆˆì— ë³´ì´ëŠ” ê¹¨ë—í•¨ ê·¸ ë„ˆë¨¸ì˜ ê°€ì¹˜ë¥¼ ë´…ë‹ˆë‹¤.<br />ì¤€ê³µ í˜„ìž¥ì˜ ë¯¸ì„¸í•œ ë¶„ì§„ë¶€í„° ì™¸ë²½ê³¼ ìœ ë¦¬ì˜ ê³ ì°©ëœ ì˜¤ì—¼ê¹Œì§€, ìš°ë¦¬ëŠ” ê° ë¶„ì•¼ì˜ ìŠ¤íŽ˜ì…œë¦¬ìŠ¤íŠ¸ë“¤ì´ ëª¨ì¸ ì²´ê³„ì ì¸ íŒ€ì›Œí¬ë¡œ ëŒ€ì‘í•©ë‹ˆë‹¤.</p>
+                                    <p className="text-[#f97316] font-black text-lg md:text-xl italic drop-shadow-sm">"ê³µê°„ì˜ ê°€ì¹˜ëŠ” ê²°êµ­ ë¨¸ë¬´ëŠ” ì‚¬ëžŒìœ¼ë¡œë¶€í„° ì‹œìž‘ë˜ê¸° ë•Œë¬¸ìž…ë‹ˆë‹¤."</p>
+                                    <div className="pt-6 border-t border-green-200/50"><p className="text-gray-900 font-bold text-base md:text-lg">ê°€ìž¥ ë§‘ì€ ì‹œì•¼ë¥¼ ì„ ì‚¬í•˜ëŠ” ìœ ë¦¬ ì¼€ì–´, í˜¸í¡ì˜ ì§ˆì„ ë°”ê¾¸ëŠ” ì •ë°€ ë°”ë‹¥ ê´€ë¦¬, ê±´ë¬¼ì˜ ìƒëª…ë ¥ì„ ì—°ìž¥í•˜ëŠ” ì™¸ë²½ ë³µì›ê¹Œì§€.<br />ë” ì›° ì„œë¹„ìŠ¤ì˜ ìˆ™ë ¨ëœ ì „ë¬¸ê°€ ê·¸ë£¹ì´ ë‹¹ì‹ ì˜ ë¹„ì¦ˆë‹ˆìŠ¤ ê³µê°„ì„ ê°€ìž¥ ì•ˆì „í•˜ê³  í’ìš”ë¡œìš´ 'ì›°ë¹™'ì˜ ìž¥ì†Œë¡œ ì™„ì„±í•´ ë“œë¦¬ê² ìŠµë‹ˆë‹¤.</p></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="lg:col-span-5 grid grid-cols-2 gap-5 lg:gap-6">
+                            {[ 
+                                { t: 'ì¹œí™˜ê²½', st: 'ì—ì½” ì‹œìŠ¤í…œ', icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" /> },
+                                { t: 'ì „ë¬¸ì„±', st: 'ë…ìžì  8ë‹¨ê³„ ë¡œì§', icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m5.618-4.016A3.323 3.323 0 0010.605 7.065a11.062 11.062 0 01-2.341 5.623m-7.603-.997a2.983 2.983 0 001.242 7.213 11.041 11.041 0 0110.374 3.024c0-2.208.753-4.235 2.008-5.83a3.326 3.326 0 00-6.685-3.326z" /> },
+                                { t: 'ì‹ ë¢°', st: 'ê³ ê° ë§žì¶¤ ì‹ ë¢°', icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /> },
+                                { t: 'ì™„ë²½í•¨', st: 'í•˜ìž ì—†ëŠ” ì™„ë²½ ì‹œê³µ', icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" /> }
+                            ].map((item, i) => (
+                                <div key={i} className="bg-white p-6 lg:p-8 rounded-3xl shadow-[0_4px_25px_rgb(0,0,0,0.03)] border border-gray-100 text-center flex flex-col items-center justify-center transform hover:-translate-y-2 transition-all duration-500 group aspect-square">
+                                    <div className="w-14 h-14 lg:w-16 lg:h-16 bg-green-50 text-[#22c55e] rounded-2xl flex items-center justify-center mb-5 shadow-inner group-hover:bg-[#064e3b] group-hover:text-white transition-all duration-500">
+                                        <svg className="w-7 h-7 lg:w-8 lg:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">{item.icon}</svg>
+                                    </div>
+                                    <h4 className="text-lg lg:text-xl font-black text-gray-900 mb-1">{item.t}</h4>
+                                    <p className="text-gray-500 font-bold text-[10px] lg:text-[11px] tracking-wider uppercase">{item.st}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+
+        const Reviews = () => {
+            return (
+                <section id="reviews" className="py-16 md:py-24 bg-white relative">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <div className="flex justify-center items-center space-x-3 mb-4"><div className="w-8 h-[1px] bg-[#c5a059]"></div><span className="text-[#c5a059] font-bold text-xs tracking-[0.3em] uppercase">ê³ ê°ì˜ ìƒìƒí•œ ëª©ì†Œë¦¬</span><div className="w-8 h-[1px] bg-[#c5a059]"></div></div>
+                            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4 tracking-tight">í˜„ìž¥ì—ì„œ ì¦ëª…ëœ <span className="text-[#064e3b]">ì‹ ë¢°ì˜ ê¸°ë¡</span></h2>
+                            <div className="w-16 h-1 bg-[#c5a059]/30 mx-auto rounded-full mb-6"></div>
+                            <p className="text-lg md:text-xl text-gray-500 font-medium break-keep opacity-80">ë” ì›° ì„œë¹„ìŠ¤ì™€ í•¨ê»˜í•œ ê³ ê°ë‹˜ë“¤ì˜ ì‹¤ì œ ì´ì•¼ê¸°ìž…ë‹ˆë‹¤.</p>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3 md:gap-8">
+                            {[
+                                { name: 'ê¹€*í˜¸ ë‹´ë‹¹ìž', company: 'ã…‡ã…‡ì‹œì²­', text: 'ê´€ê³µì„œ íŠ¹ì„±ìƒ ìœ„ìƒê³¼ ë³´ì•ˆì´ ì¤‘ìš”í•œë°, ë§¤ë‰´ì–¼ëŒ€ë¡œ ì •ë§ ê¼¼ê¼¼í•˜ê²Œ ìž‘ì—…í•´ì£¼ì…”ì„œ ë§Œì¡±ìŠ¤ëŸ½ìŠµë‹ˆë‹¤.' },
+                                { name: 'ì´*ì˜ ëŒ€í‘œ', company: '(ì£¼)í˜ì‹  IT ê¸°ì—…', text: 'ì§ì›ë“¤ì´ ì¶œê·¼í–ˆì„ ë•Œ ì‚¬ë¬´ì‹¤ì´ ìƒì¾Œí•´ì„œ ë„ˆë¬´ ì¢‹ì•„í•©ë‹ˆë‹¤. ì—…ë¬´ íš¨ìœ¨ì´ ì €ì ˆë¡œ ì˜¬ë¼ê°€ëŠ” ê¸°ë¶„ì´ì—ìš”.' },
+                                { name: 'ë°•*ì§„ í˜„ìž¥ì†Œìž¥', company: 'ëŒ€í˜• ë³µí•©ê±´ë¬¼', text: 'ì¤€ê³µ ì²­ì†Œë¥¼ ë§¡ê²¼ëŠ”ë° ëˆˆì— ë³´ì´ì§€ ì•ŠëŠ” ë¨¼ì§€ê¹Œì§€ í™•ì‹¤ížˆ ìž¡ì•„ì£¼ì…”ì„œ ìž…ì£¼ìžë“¤ ì»´í”Œë ˆì¸ì´ ì—†ì—ˆìŠµë‹ˆë‹¤.' },
+                                { name: 'ìµœ*ì¤€ íŒ€ìž¥', company: 'ë©”ë””ì»¬ ì„¼í„°', text: 'ë³‘ì›ì´ë¼ ìœ„ìƒì´ ìµœìš°ì„ ì¸ë°, ì •ë°€ ì‚´ê·  ì„¸ì²™ ë•ë¶„ì— ì•ˆì‹¬í•˜ê³  ì§„ë£Œì— ì§‘ì¤‘í•  ìˆ˜ ìžˆê²Œ ë˜ì—ˆìŠµë‹ˆë‹¤.' },
+                                { name: 'ì •*ë¯¸ ì‹¤ìž¥', company: 'ë””ìžì¸ ìŠ¤íŠœë””ì˜¤', text: 'ìœ ë¦¬ì°½ í´ë¦¬ë‹ í›„ ì±„ê´‘ì´ ë‹¬ë¼ì¡Œì–´ìš”. ê³µê°„ì˜ ì „ì²´ì ì¸ ë¶„ìœ„ê¸°ê°€ ë°ì•„ì ¸ì„œ ì•„ì£¼ ë§Œì¡±í•©ë‹ˆë‹¤.' },
+                                { name: 'í•œ*ìˆ˜ ë‹´ë‹¹', company: 'ë¬¼ë¥˜ í´ëŸ¬ìŠ¤í„°', text: 'ë°”ë‹¥ ê³ ê´‘íƒ ì™ì‹± í›„ ê´€ë¦¬ê°€ ë„ˆë¬´ íŽ¸í•´ì¡Œë„¤ìš”. ë‚´êµ¬ì„±ë„ ì¢‹ê³  ë³´ê¸°ì—ë„ í›¨ì”¬ ì „ë¬¸ì ìž…ë‹ˆë‹¤.' },
+                            ].map((r, i) => (
+                                <div key={i} className="bg-white p-4 md:p-10 rounded-[1rem] md:rounded-[2.5rem] border border-gray-100 shadow-[0_10px_50px_rgb(0,0,0,0.04)] relative group transition-all duration-500 hover:-translate-y-2">
+                                    <div className="hidden md:block text-[#c5a059] text-5xl opacity-10 absolute top-8 right-10 font-serif group-hover:opacity-30 transition-opacity">"</div>
+                                    <div className="flex flex-col md:flex-row items-center md:items-start mb-3 md:mb-8 text-center md:text-left">
+                                        <div className="w-10 h-10 md:w-14 md:h-14 bg-green-50 rounded-xl md:rounded-2xl flex items-center justify-center font-bold text-[#22c55e] shadow-inner mb-2 md:mb-0 md:mr-5 group-hover:bg-[#064e3b] group-hover:text-white transition-all">
+                                            <svg className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/></svg>
+                                        </div>
+                                        <div><h4 className="font-extrabold text-gray-900 text-[10px] md:text-lg">{r.name}</h4><p className="hidden md:block text-xs text-gray-400 font-bold tracking-tight uppercase">{r.company}</p></div>
+                                    </div>
+                                    <p className="text-gray-700 leading-tight md:leading-relaxed relative z-10 font-medium italic text-[9px] md:text-base break-keep">"{r.text}"</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const TheWellSystem8 = () => {
+            const [activeIdx, setActiveIdx] = useState(null);
+
+            const toggleStep = (idx) => {
+                setActiveIdx(activeIdx === idx ? null : idx);
+            };
+
+            const steps = [
+                { num: '01', title: 'í˜„ìž¥ ì •ë°€ ì§„ë‹¨', subtitle: 'Field Analysis', desc: 'ìž‘ì—… ì „ ê±´ìžìž¬ì˜ ì¢…ë¥˜ì™€ ì˜¤ì—¼ì›ì˜ ì„±ì§ˆ(ì‚°ì„±, ì•Œì¹¼ë¦¬ì„± ë“±)ì„ ë¶„ì„í•©ë‹ˆë‹¤.', img: 'https://images.unsplash.com/photo-1507206130118-b5907f817163?auto=format&fit=crop&q=80&w=800', icon: <React.Fragment><path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 7V10L12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></React.Fragment> },
+                { num: '02', title: 'ë³´ì–‘ ë° ì•ˆì „ ì„¤ê³„', subtitle: 'Safety Setting', desc: 'ê³ ê°€ ê°€ì „ì´ë‚˜ ì†ìƒ ìœ„í—˜ ì‹œì„¤ë¬¼ì„ ë³´ì–‘í•˜ê³ , ë¡œí”„ ë“± ì•ˆì „ ë¼ì¸ì„ êµ¬ì¶•í•©ë‹ˆë‹¤.', img: 'https://images.unsplash.com/photo-1542151123-f220808cf702?auto=format&fit=crop&q=80&w=800', icon: <React.Fragment><path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M9 12L11 14L15 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></React.Fragment> },
+                { num: '03', title: 'ì‚°ì—…ìš© ê³ ì„±ëŠ¥ ì§‘ì§„', subtitle: 'High-Power Vacuuming', desc: 'ê³µì‚¬ ë¶„ì§„ì´ë‚˜ ê³ ì°©ëœ ë¨¼ì§€ë¥¼ ì‚°ì—…ìš© ì²­ì†Œê¸°ë¡œ ì„ ì œê±°í•˜ì—¬ 2ì°¨ ì˜¤ì—¼ì„ ë°©ì§€í•©ë‹ˆë‹¤.', img: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&q=80&w=800', icon: <React.Fragment><path d="M8 4H16M8 8H16M12 12V20M12 20H8M12 20H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M4 14C4 10.6863 6.68629 8 10 8H14C17.3137 8 20 10.6863 20 14V20H4V14Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></React.Fragment> },
+                { num: '04', title: 'ë§žì¶¤í˜• ì„¸ì • ë°˜ì‘', subtitle: 'Chemical Reaction', desc: 'ìžìž¬ ì†ìƒ ì—†ëŠ” ì„¸ì •ì œë¥¼ ìµœì  ë¹„ìœ¨ë¡œ í¬ì„ ë„í¬í•˜ì—¬ ì˜¤ì—¼ì„ ë¶ˆë ¤ëƒ…ë‹ˆë‹¤.', img: 'https://images.unsplash.com/photo-1554734867-bf3c00a49371?auto=format&fit=crop&q=80&w=800', icon: <React.Fragment><path d="M9 3H15M12 3V10l4.636 8.03A2 2 0 0114.904 21H9.096a2 2 0 01-1.732-3.04L12 10z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 15h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></React.Fragment> },
+                { num: '05', title: 'ì •ë°€ ê¸°ê³„ ì„¸ì²™', subtitle: 'Power Scrubbing', desc: 'íŠ¹ìˆ˜ ìž¥ë¹„(ë§ˆë£¨ ê´‘íƒê¸°, ê³ ì•• ì„¸ì²™ê¸° ë“±)ë¥¼ íˆ¬ìž…í•˜ì—¬ ë¶ˆë ¤ì§„ ì˜¤ì—¼ì„ ì œê±°í•©ë‹ˆë‹¤.', img: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&q=80&w=800', icon: <React.Fragment><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3"/><path d="M12 8v8M8 12h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" /></React.Fragment> },
+                { num: '06', title: 'pH ì¤‘í™” ë° ë¦°ì‹±', subtitle: 'Neutralizing & Rinsing', desc: <span>ì„¸ì •ì œ ì„±ë¶„ì´ ë‚¨ì§€ ì•Šë„ë¡ ì™„ë²½ížˆ ì¤‘í™”í•˜ê³  ê¹¨ë—í•œ ë¦°ì‹±ìœ¼ë¡œ ìžìž¬ ë³¸ì—°ì˜ ì§ˆê°ì„ ë³µì›í•˜ëŠ” ê³µì •ìž…ë‹ˆë‹¤.</span>, img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=800', icon: <React.Fragment><path d="M12 3C12 3 5 8 5 14C5 17.866 8.13401 21 12 21C15.866 21 19 17.866 19 14C19 8 12 3 12 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 15C10 15 11.5 17 14 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></React.Fragment> },
+                { num: '07', title: 'í‘œë©´ ë³´í˜¸ ë° ì½”íŒ…', subtitle: 'Protective Coating', desc: 'ì˜¤ì—¼ ë°©ì§€ ë° ì •ì „ê¸° ë°©ì§€ ì½”íŒ…ì„ ì ìš©í•˜ì—¬ ì¾Œì í•œ ì²­ê²° ìƒíƒœê°€ ì˜¤ëžœ ê¸°ê°„ ìœ ì§€ë˜ê²Œ í•©ë‹ˆë‹¤.', img: 'https://images.unsplash.com/photo-1510218830377-1e93b670941c?auto=format&fit=crop&q=80&w=800', icon: <path d="M12 3l2.8 6.4 6.2.5-4.8 4 1.5 6.1L12 16.5l-5.7 3.5 1.5-6.1-4.8-4 6.2-.5L12 3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /> },
+                { num: '08', title: 'ìž‘ì—… ì™„ë£Œ ë³´ê³ ì„œ ì œì¶œ', subtitle: 'Final Inspection & Report', desc: <span>íŒ€ìž¥ê¸‰ ê´€ë¦¬ìž ê²€ìˆ˜ í›„, ì‹œê³µ ì „í›„ ê³µì • ë°ì´í„°ë¥¼ ì •ë¦¬í•œ í”„ë¦¬ë¯¸ì—„ ë¦¬í¬íŠ¸ë¥¼ ì œê³µí•©ë‹ˆë‹¤.</span>, img: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800', icon: <React.Fragment><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M9 8h6M9 12h6M9 16h3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M15 16l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></React.Fragment> }
+            ];
+
+            return (
+                <section className="py-16 md:py-24 bg-[#F8F9FA] relative">
+                    <div className="max-w-7xl mx-auto px-6 relative z-10">
+                        <div className="text-center mb-16">
+                            <div className="flex justify-center items-center space-x-3 mb-4"><div className="w-8 h-[1px] bg-[#22c55e]"></div><span className="text-[#22c55e] font-bold text-xs tracking-[0.3em] uppercase">The Well System 8</span><div className="w-8 h-[1px] bg-[#22c55e]"></div></div>
+                            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4 tracking-tight">8ë‹¨ê³„ ì •ë°€ í´ë¦¬ë‹ ë¡œì§</h2>
+                            <div className="w-16 h-1 bg-[#22c55e] mx-auto rounded-full mb-6"></div>
+                            <p className="text-lg md:text-xl text-gray-500 font-medium break-keep opacity-90">'ìœ„ì—ì„œ ì•„ëž˜ë¡œ, ì•ˆì—ì„œ ë°–ìœ¼ë¡œ' íë¥´ëŠ” ì²´ê³„ì ì¸ ë°ì´í„° ê¸°ë°˜ ìž‘ì—…</p>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+                            {steps.map((step, idx) => {
+                                const isActive = activeIdx === idx;
+                                return (
+                                    <div 
+                                        key={idx} 
+                                        onClick={() => toggleStep(idx)}
+                                        className={`rounded-2xl md:rounded-[2.5rem] p-5 md:p-8 shadow-2xl transition-all duration-700 transform lg:hover:-translate-y-2 flex flex-col group h-full relative overflow-hidden border-2 ${isActive ? 'border-[#22c55e] scale-[1.02]' : 'border-white/10'} cursor-pointer md:cursor-default`}
+                                    >
+                                        {/* Background Image Layer */}
+                                        <div className="absolute inset-0 z-0">
+                                            <img src={step.img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={step.title} />
+                                            <div className={`absolute inset-0 transition-opacity duration-500 ${isActive ? 'bg-black/70' : 'bg-black/50 group-hover:bg-black/60'}`} />
+                                        </div>
+
+                                        <div className="flex items-start justify-between mb-4 md:mb-8 z-10 relative">
+                                            <div className={`flex flex-col items-center justify-center w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl font-black text-xs md:text-xl shadow-lg transition-all duration-300 ${isActive ? 'bg-[#22c55e] text-white' : 'bg-white/20 text-white backdrop-blur-md group-hover:bg-[#22c55e]'}`}>{step.num}</div>
+                                            <div className={`w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${step.highlight || isActive ? 'bg-[#22c55e] text-white' : 'bg-white/20 text-white backdrop-blur-md group-hover:bg-[#22c55e]'}`}><svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24">{step.icon}</svg></div>
+                                        </div>
+                                        <h3 className={`text-sm md:text-xl font-black mb-1 transition-all duration-300 z-10 relative tracking-tight break-keep ${isActive ? 'text-[#22c55e]' : 'text-white group-hover:text-[#22c55e]'}`}>
+                                            {step.title}
+                                            <svg className={`w-3 h-3 md:hidden inline-block ml-1.5 transition-transform duration-300 ${isActive ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                                        </h3>
+                                        <div className={`hidden md:block text-[11px] font-bold uppercase tracking-widest mb-4 z-10 relative ${step.highlight ? 'text-[#22c55e]' : 'text-white/60'}`}>{step.subtitle}</div>
+                                        
+                                        <div className={`transition-all duration-500 ease-in-out overflow-hidden md:max-h-none ${isActive ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0 md:opacity-100'}`}>
+                                            <p className="text-[10px] md:text-[14px] leading-relaxed break-keep z-10 relative text-white/90 font-medium">{step.desc}</p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const ServiceCard = ({ srv }) => {
+            const [isOpen, setIsOpen] = useState(false);
+            return (
+                <div className="bg-white rounded-2xl md:rounded-3xl p-5 md:p-10 shadow-[0_4px_25px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.1)] transition-all duration-500 transform lg:hover:-translate-y-2 border border-gray-100 flex flex-col group h-full cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+                    <div className="w-12 h-12 md:w-20 md:h-20 bg-green-50 rounded-xl md:rounded-2xl flex items-center justify-center text-[#22c55e] mb-4 md:mb-8 group-hover:bg-[#064e3b] group-hover:text-white group-hover:shadow-lg transition-all duration-500 shadow-inner relative overflow-hidden"><svg className="w-6 h-6 md:w-10 md:h-10" fill="none" viewBox="0 0 24 24">{srv.icon}</svg></div>
+                    <h3 className="text-base md:text-2xl font-black text-gray-900 mb-2 md:mb-3 group-hover:text-[#064e3b] transition-colors">{srv.title}</h3>
+                    <p className="text-gray-500 text-[10px] md:text-base leading-tight md:leading-relaxed font-medium break-keep opacity-80 group-hover:opacity-100 transition-opacity mb-2 md:mb-2 flex-grow">{srv.desc}</p>
+                    <div className="mt-auto border-t border-gray-100 pt-3 md:pt-5">
+                        <div className="flex items-center justify-between w-full text-left text-[#064e3b] font-bold text-[9px] md:text-xs tracking-tight transition-all">
+                            <span className="hidden md:inline">ìš°ë¦¬ëŠ” ì´ 8ë‹¨ê³„ ì›ì¹™ì„ ì—„ê²©ížˆ ì¤€ìˆ˜í•©ë‹ˆë‹¤</span>
+                            <span className="md:hidden">8ë‹¨ê³„ ì •ë°€ ê³µì •</span>
+                            <svg className={`w-3 h-3 md:w-4 md:h-4 ml-1 flex-shrink-0 transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                        <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-96 opacity-100 mt-2 md:mt-4' : 'max-h-0 opacity-0'}`}>
+                            <ol className="text-[8px] md:text-[11px] text-[#064e3b]/80 grid grid-cols-2 gap-x-1 gap-y-2 bg-[#22c55e]/5 p-2 md:p-4 rounded-lg md:rounded-xl list-decimal list-inside font-bold whitespace-nowrap overflow-hidden">
+                                {['í˜„ìž¥ ì§„ë‹¨','ì•ˆì „ ë³´ì–‘','ê³ ì„±ëŠ¥ ì§‘ì§„','ë§žì¶¤ ì„¸ì •','ê¸°ê³„ ì„¸ì²™','ì¤‘í™” ë¦°ì‹±','ë³´í˜¸ ì½”íŒ…','ìµœì¢… ê²€ìˆ˜'].map((step, i) => <li key={i} className="overflow-hidden text-ellipsis">{step}</li>)}
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Services = () => {
+            const serviceList = [
+                { title: 'ì¤€ê³µ ì²­ì†Œ', desc: 'ì‹œê³µ í›„ ë‚¨ì€ ë¶„ì§„ê³¼ ìœ í•´ë¬¼ì§ˆ ì™„ë²½ ì œê±°', icon: <React.Fragment><path d="M3 21V7L12 3L21 7V21H3Z"/><path d="M9 17H15M12 11V14M12 7V8M17 14L19 16"/><circle cx="18" cy="13" r="1" fill="currentColor"/><circle cx="6" cy="12" r="1.5" fill="currentColor"/></React.Fragment> },
+                { title: 'ë°”ë‹¥ ì²­ì†Œ', desc: 'ì „ë¬¸ ìž¥ë¹„ì™€ ì•½í’ˆìœ¼ë¡œ ë°”ë‹¥ ì°Œë“  ë•Œ ì œê±° ë° ì½”íŒ…', icon: <React.Fragment><path d="M4 14C4 14 6 13 12 13C18 13 20 14 20 14V19C20 19 18 20 12 20C6 20 4 19 4 19V14Z"/><path d="M12 13V4M12 4L9 7M12 4L15 7M17 9.5L19 10.5M5 10.5L7 9.5"/><circle cx="12" cy="16.5" r="1.5" fill="currentColor"/></React.Fragment> },
+                { title: 'ìœ ë¦¬ ì²­ì†Œ', desc: 'ì–¼ë£© ì—†ì´ íˆ¬ëª…í•œ ì‹œì•¼ í™•ë³´ë¥¼ ìœ„í•œ íŠ¹ìˆ˜ í´ë¦¬ë‹', icon: <React.Fragment><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10H20M10 4V20M15 7L18 10M6 14L10 18"/><path d="M14 14L16 16" strokeWidth="2"/><circle cx="17" cy="6" r="1.5" fill="currentColor"/></React.Fragment> },
+                { title: 'ì™¸ë²½ ì²­ì†Œ', desc: 'ê±´ë¬¼ ì™¸ê´€ì˜ ì˜¤ì—¼ë¬¼ì„ ì œê±°í•˜ì—¬ ë¹Œë”© ê°€ì¹˜ ìƒìŠ¹', icon: <React.Fragment><path d="M4 21V3H14V21M14 7H20V21M7 7H11M7 11H11M7 15H11M17 11H18M17 15H18M2 21H22"/><path d="M12 3L12 21" strokeWidth="1" strokeDasharray="2 2" opacity="0.3"/></React.Fragment> }
+            ];
+            return (
+                <section id="services" className="py-16 md:py-24 bg-white relative">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <div className="flex justify-center items-center space-x-3 mb-4"><div className="w-8 h-[1px] bg-[#c5a059]"></div><span className="text-[#c5a059] font-bold text-xs tracking-[0.3em] uppercase">ë” ì›° ì„œë¹„ìŠ¤ì˜ í•µì‹¬ ì—­ëŸ‰</span><div className="w-8 h-[1px] bg-[#c5a059]"></div></div>
+                            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4 tracking-tight">í”„ë¦¬ë¯¸ì—„ <span className="text-[#064e3b]">í´ë¦¬ë‹ ì„œë¹„ìŠ¤</span></h2>
+                            <div className="w-16 h-1 bg-gray-100 mx-auto rounded-full mb-6"></div>
+                            <p className="text-lg md:text-xl text-gray-500 font-medium break-keep opacity-80">ë‹¨ í•˜ë‚˜ì˜ ì–¼ë£©ë„ í—ˆìš©í•˜ì§€ ì•ŠëŠ” **ë” ì›° ì„œë¹„ìŠ¤**ë§Œì˜ íŠ¹í™” ì†”ë£¨ì…˜</p>
+                        </div>
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 items-stretch">
+                            {serviceList.map((srv, idx) => <ServiceCard key={idx} srv={srv} />)}
+                                <div className="bg-[#064e3b] text-white rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-16 flex flex-col lg:flex-row justify-between items-center text-center lg:text-left h-auto shadow-2xl md:col-span-2 lg:col-span-4 mt-6 md:mt-12 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-96 h-96 bg-[#a3e635] rounded-full mix-blend-overlay filter blur-3xl opacity-10 -translate-x-1/4 -translate-y-1/2 group-hover:opacity-30 transition-opacity duration-1000"></div>
+                                    <div className="relative z-10"><h3 className="text-2xl md:text-4xl font-black mb-4 leading-tight break-keep">ìš°ë¦¬ ê³µê°„ì— ë”± ë§žëŠ”<br/><span className="text-[#f97316]">ê²¬ì  ì†”ë£¨ì…˜</span>ì´ í•„ìš”í•˜ì‹ ê°€ìš”?</h3><p className="text-gray-300 text-base md:text-lg font-medium break-keep max-w-xl">ë” ì›° ì„œë¹„ìŠ¤ì˜ ì „ë¬¸ê°€ê°€ ì§ì ‘ ë°©ë¬¸í•˜ì—¬ í˜„ìž¥ ìƒí™©ì„ ì§„ë‹¨í•˜ê³  ê°€ìž¥ í•©ë¦¬ì ì¸ ê´€ë¦¬ ê³„íšì„ ì œì•ˆí•´ ë“œë¦½ë‹ˆë‹¤.</p></div>
+                                    <a href="#quote" className="relative z-10 glossy-green glossy-shine text-white font-black py-5 md:py-6 px-10 md:px-14 rounded-2xl shadow-xl hover:shadow-[#22c55e]/30 transition-all w-full lg:w-auto mt-8 md:mt-10 lg:mt-0 flex-shrink-0 text-lg md:text-xl transform hover:scale-105 active:scale-95 duration-300 border border-white/20">ë¬´ë£Œ ë°©ë¬¸ ê²¬ì  ì‹ ì²­</a>
+                                </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const PortfolioBoard = ({ onCategorySelect }) => {
+            const categories = [
+                { id: 'ì¤€ê³µ-ì²­ì†Œ', name: 'ì¤€ê³µ ì²­ì†Œ', desc: 'ì¸í…Œë¦¬ì–´ ì‹œê³µ ë° ìž…ì£¼ ì „ í•„ìˆ˜ ì´ˆì •ë°€ í´ë¦¬ë‹', img: 'images/portfolio_completion.png' },
+                { id: 'ë°”ë‹¥-ì²­ì†Œ', name: 'ë°”ë‹¥ ì²­ì†Œ', desc: 'íŠ¹ìˆ˜ ìž¥ë¹„ë¥¼ í™œìš©í•œ ì°Œë“  ë•Œ ì œê±° ë° ê³ ê´‘íƒ ì™ì‹± ì½”íŒ…', img: 'images/portfolio_floor.png' },
+                { id: 'ìœ ë¦¬-ì²­ì†Œ', name: 'ìœ ë¦¬ ì²­ì†Œ', desc: 'ì–¼ë£© ì—†ëŠ” ìµœìƒì˜ ì‹œì•¼ë¥¼ ë³´ìž¥í•˜ëŠ” ê³ ì¸µ íŠ¹ìˆ˜ íˆ¬ëª…ì°½ ì‹œê³µ', img: 'images/portfolio_glass.png' },
+                { id: 'ì™¸ë²½-ì²­ì†Œ', name: 'ì™¸ë²½ ì²­ì†Œ', desc: 'ì‚°ì„±ë¹„ë¡œ ë¶€ì‹ë˜ê³  ì˜¤ì—¼ëœ ê±´ì¶•ë¬¼ ë§ˆê°ìž¬ ë³µì› ë° ì •ë°€ ì„¸ì²™', img: 'images/portfolio_exterior.png' },
+            ];
+            return (
+                <section id="portfolio" className="py-16 md:py-24 bg-gray-50 relative border-t border-gray-100">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">í¬íŠ¸í´ë¦¬ì˜¤ ê°¤ëŸ¬ë¦¬</h2>
+                            <div className="w-16 h-1.5 bg-[#22c55e] mx-auto rounded-full mb-6"></div>
+                            <p className="text-lg md:text-xl text-gray-500 font-medium break-keep opacity-80">ì•„ëž˜ ì¹´í…Œê³ ë¦¬ë¥¼ í´ë¦­í•˜ì‹œë©´ í˜„ìž¥ì˜ ë•€ë°©ìš¸ì´ ê¸°ë¡ëœ **ì „ìš© ê²Œì‹œíŒ**ìœ¼ë¡œ ì´ë™í•©ë‹ˆë‹¤.</p>
+                        </div>
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+                            {categories.map((cat) => (
+                                <div key={cat.id} onClick={() => onCategorySelect(cat.id)} className="group cursor-pointer flex flex-col items-center">
+                                    <div className="w-full h-40 sm:h-64 md:h-80 rounded-2xl md:rounded-[2.5rem] mb-3 md:mb-6 relative overflow-hidden bg-gray-200 shadow-md border border-gray-100 flex-shrink-0">
+                                        <img src={cat.img} alt={cat.name} className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[800ms] ease-out" />
+                                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <span className="bg-white/95 backdrop-blur-sm text-[#16a34a] font-black px-3 py-2 md:px-6 md:py-3.5 rounded-full shadow-xl transform group-hover:scale-110 transition-transform flex items-center duration-300 text-[10px] sm:text-xs md:text-base">
+                                                {cat.name}
+                                                <svg className="w-3 h-3 ml-1.5 md:ml-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7"/></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <h3 className="text-sm md:text-2xl font-extrabold text-gray-900 mb-1 md:mb-3 group-hover:text-[#22c55e] transition-colors break-keep text-center">{cat.name}</h3>
+                                    <p className="hidden md:block text-gray-500 text-center text-sm font-medium px-4 break-keep">{cat.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const QuoteForm = () => {
+            const [selectedService, setSelectedService] = useState('');
+            const services = [
+                { id: 'ì¤€ê³µì²­ì†Œ', label: 'ì¤€ê³µ ì²­ì†Œ', icon: <React.Fragment><path d="M3 21V7L12 3L21 7V21H3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M9 17H15M12 11V14M12 7V8M17 14L19 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="18" cy="13" r="1" fill="currentColor"/><circle cx="6" cy="12" r="1.5" fill="currentColor" /></React.Fragment> },
+                { id: 'ë°”ë‹¥ì²­ì†Œ', label: 'ë°”ë‹¥ ì²­ì†Œ', icon: <React.Fragment><path d="M4 14C4 14 6 13 12 13C18 13 20 14 20 14V19C20 19 18 20 12 20C6 20 4 19 4 19V14Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 13V4M12 4L9 7M12 4L15 7M17 9.5L19 10.5M5 10.5L7 9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="16.5" r="1.5" fill="currentColor" /></React.Fragment> },
+                { id: 'ìœ ë¦¬ì²­ì†Œ', label: 'ìœ ë¦¬ ì²­ì†Œ', icon: <React.Fragment><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M4 10H20M10 4V20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M15 7L18 10M6 14L10 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="opacity-40"/><path d="M14 14L16 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></React.Fragment> },
+                { id: 'ì™¸ë²½ì²­ì†Œ', label: 'ì™¸ë²½ ì²­ì†Œ', icon: <path d="M4 21V3H14V21M14 7H20V21M7 7H11M7 11H11M7 15H11M17 11H18M17 15H18M2 21H22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /> },
+            ];
+            return (
+                <section id="quote" className="py-16 md:py-24 bg-white relative overflow-hidden">
+                    <div className="absolute top-1/4 -right-20 w-80 h-80 bg-[#22c55e]/5 rounded-full blur-[100px]"></div><div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-[#c5a059]/5 rounded-full blur-[100px]"></div>
+                    <div className="max-w-4xl mx-auto px-6 relative">
+                        <div className="bg-white rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-10 md:p-16 shadow-[0_30px_80px_rgb(0,0,0,0.10)] border border-gray-200 ring-1 ring-gray-100">
+                            <div className="text-center mb-10 md:mb-14"><span className="inline-block px-4 py-1.5 rounded-full glossy-green text-white text-[10px] font-black tracking-[0.2em] uppercase mb-6 shadow-md border border-white/20">Consultation</span><h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-gray-900 mb-4 md:mb-5 tracking-tight">ë¬´ë£Œ ë°©ë¬¸ ê²¬ì  ì‹ ì²­</h2><div className="w-12 h-1 bg-[#22c55e]/20 mx-auto rounded-full mb-6"></div><p className="text-sm md:text-base text-gray-500 font-medium max-w-lg mx-auto leading-relaxed opacity-80 break-keep">ê·€í•˜ì˜ ê³µê°„ì— ìµœì í™”ëœ í”„ë¦¬ë¯¸ì—„ í´ë¦¬ë‹ ì†”ë£¨ì…˜ì„ ì œì•ˆí•´ ë“œë¦½ë‹ˆë‹¤.</p><a href="tel:16888740" className="inline-flex items-center gap-2 mt-4 text-[#22c55e] font-black text-xl tracking-widest hover:text-[#16a34a] transition-colors"><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>1688-8740</a></div>
+                            <form className="space-y-10">
+                                <div className="space-y-4"><label className="text-sm font-bold text-gray-400 uppercase tracking-widest ml-1">í•„ìš”í•œ ì²­ì†Œ ì„œë¹„ìŠ¤</label><div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    {services.map((service) => (
+                                        <button key={service.id} type="button" onClick={() => setSelectedService(service.id)} className={`group relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-300 ${selectedService === service.id ? 'border-[#22c55e] glossy-green text-white shadow-lg scale-[1.02]' : 'border-gray-50 bg-gray-50/50 text-gray-400 hover:border-gray-200 hover:bg-white'}`}>
+                                            <span className={`text-2xl mb-2 transition-transform duration-300 group-hover:scale-110 ${selectedService === service.id ? 'opacity-100' : 'opacity-40'}`}><svg className="w-6 h-6" fill="none" viewBox="0 0 24 24">{service.icon}</svg></span>
+                                            <span className="text-xs font-bold whitespace-nowrap">{service.label}</span>
+                                            {selectedService === service.id && <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-white text-[#22c55e] rounded-full flex items-center justify-center text-[10px] font-bold shadow-sm">âœ“</div>}
+                                        </button>
+                                    ))}
+                                </div></div>
+                                <div className="grid md:grid-cols-2 gap-8">
+                                    <div className="relative group"><input type="text" className="peer w-full bg-transparent border-b-2 border-gray-200 py-3 px-1 focus:outline-none focus:border-[#22c55e] transition-colors placeholder-transparent" id="name" placeholder="ì´ë¦„ / ìƒí˜¸ëª…"/><label htmlFor="name" className="absolute left-1 top-3 text-gray-400 font-medium transition-all duration-300 pointer-events-none peer-focus:text-xs peer-focus:-translate-y-6 peer-focus:text-[#22c55e] peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-translate-y-6">ì´ë¦„ / ìƒí˜¸ëª…</label></div>
+                                    <div className="relative group"><input type="tel" className="peer w-full bg-transparent border-b-2 border-gray-200 py-3 px-1 focus:outline-none focus:border-[#22c55e] transition-colors placeholder-transparent" id="phone" placeholder="ì—°ë½ì²˜"/><label htmlFor="phone" className="absolute left-1 top-3 text-gray-400 font-medium transition-all duration-300 pointer-events-none peer-focus:text-xs peer-focus:-translate-y-6 peer-focus:text-[#22c55e] peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-translate-y-6">ì—°ë½ì²˜</label></div>
+                                </div>
+                                <div className="relative group"><textarea rows="3" className="peer w-full bg-transparent border-b-2 border-gray-200 py-3 px-1 focus:outline-none focus:border-[#22c55e] transition-colors placeholder-transparent resize-none" id="message" placeholder="ë¬¸ì˜ ë‚´ìš©"></textarea><label htmlFor="message" className="absolute left-1 top-3 text-gray-400 font-medium transition-all duration-300 pointer-events-none peer-focus:text-xs peer-focus:-translate-y-6 peer-focus:text-[#22c55e] peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-translate-y-6">ë¬¸ì˜ ë‚´ìš© (í‰ìˆ˜, íŠ¹ì´ì‚¬í•­ ë“±)</label></div>
+                                <div className="space-y-4 pt-4"><label className="text-sm font-bold text-gray-400 uppercase tracking-widest ml-1">í˜„ìž¥ ì‚¬ì§„ ì²¨ë¶€ (ì„ íƒ)</label><div className="relative group"><input type="file" multiple accept="image/*" className="hidden" id="photo-upload"/><label htmlFor="photo-upload" className="flex flex-col items-center justify-center w-full py-10 border-2 border-dashed border-gray-200 rounded-3xl bg-gray-50/50 hover:bg-white hover:border-[#22c55e] transition-all duration-500 cursor-pointer group"><div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-[#22c55e] group-hover:text-white transition-all duration-500"><svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><span className="text-sm text-gray-400 font-bold tracking-tight mb-1 group-hover:text-[#22c55e] transition-colors">í´ë¦­í•˜ê±°ë‚˜ ì‚¬ì§„ì„ ë“œëž˜ê·¸í•˜ì—¬ ì—…ë¡œë“œí•˜ì„¸ìš”</span><span className="text-[10px] text-gray-300 uppercase tracking-widest">JPG, PNG, WEBP (Max 10MB each)</span></label></div></div>
+                                <div className="pt-10"><button type="button" className="group relative w-full glossy-green-deep glossy-shine text-white font-black text-xl py-6 rounded-[2rem] overflow-hidden transition-all duration-700 shadow-[0_20px_50px_rgb(6,78,59,0.3)] hover:shadow-[0_25px_60px_rgb(34,197,94,0.4)] active:scale-[0.98] transform hover:-translate-y-1.5"><div className="relative z-10 flex items-center justify-center space-x-3"><span>ë¬´ë£Œ ë°©ë¬¸ ê²¬ì  ì‹ ì²­í•˜ê¸°</span><svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg></div><div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-40"></div><div className="absolute inset-0 rounded-[2rem] border-2 border-white/0 group-hover:border-white/30 transition-all duration-700"></div></button><div className="flex flex-col items-center mt-12 space-y-4"><div className="w-12 h-1 bg-gradient-to-r from-transparent via-[#22c55e]/20 to-transparent"></div><p className="text-[10px] text-gray-300 tracking-[0.4em] font-black uppercase opacity-60">Premium Cleaning & Maintenance Specialist</p></div></div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const QuickMenu = ({ onNavigate }) => {
+            const [showTop, setShowTop] = useState(false);
+            const [isNavOpen, setIsNavOpen] = useState(false);
+            
+            useEffect(() => {
+                const handleScroll = () => setShowTop(window.scrollY > 400);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const menuItems = [
+                { id: 'brand-story', label: 'ë¸Œëžœë“œ ìŠ¤í† ë¦¬', icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /> },
+                { id: 'services', label: 'ì„œë¹„ìŠ¤ ì†Œê°œ', icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /> },
+                { id: 'portfolio', label: 'í¬íŠ¸í´ë¦¬ì˜¤', icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /> },
+                { id: 'reviews', label: 'ê³ ê° í›„ê¸°', icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /> },
+                { id: 'quote', label: 'ê²¬ì  ì‹ ì²­', icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /> },
+            ];
+
+            const navTo = (id) => {
+                onNavigate('#' + id);
+                setIsNavOpen(false);
+            };
+
+            return (
+                <div className="fixed right-4 md:right-6 bottom-6 md:bottom-24 z-[9995] flex flex-col items-end space-y-3 md:space-y-4 group/quick">
+                    
+                    {/* Navigation Menu (Floating List) */}
+                    <div className={`flex flex-col bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 overflow-hidden transition-all duration-500 ease-in-out origin-bottom ${isNavOpen ? 'max-h-[400px] opacity-100 mb-2 scale-100' : 'max-h-0 opacity-0 mb-0 scale-95 pointer-events-none'}`}>
+                        {menuItems.map((item) => (
+                            <button key={item.id} onClick={() => navTo(item.id)} className="px-5 py-3.5 flex items-center group transition-all duration-300 hover:bg-gray-50 border-b border-gray-100 last:border-0">
+                                <div className="text-gray-400 group-hover:text-[#22c55e] transition-colors mr-4"><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">{item.icon}</svg></div>
+                                <span className="text-[13px] font-bold text-gray-700 group-hover:text-[#22c55e] transition-colors text-right w-full">{item.label}</span>
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="flex flex-col items-end space-y-3">
+                        {/* Representative Phone Number Pill */}
+                        <a href="tel:16888740" className="flex items-center bg-white/80 backdrop-blur-md text-[#22c55e] px-4 py-2.5 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 border border-[#22c55e]/20 group">
+                            <div className="bg-[#22c55e]/10 p-1.5 rounded-full mr-2.5 group-hover:bg-[#22c55e]/20 transition-colors">
+                                <svg className="w-3.5 h-3.5 text-[#22c55e]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            </div>
+                            <span className="text-xs font-black tracking-widest mr-1">1688-8740</span>
+                        </a>
+
+                        <div className="flex items-center space-x-3">
+                            {/* Scroll to Top Button */}
+                            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className={`w-11 h-11 md:w-14 md:h-14 bg-white/80 backdrop-blur-md text-gray-400 rounded-full flex items-center justify-center shadow-lg border border-gray-100 hover:text-[#22c55e] hover:border-[#22c55e] transition-all duration-500 transform active:scale-90 ${showTop ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-10 opacity-0 scale-50 pointer-events-none'}`} aria-label="ë§¨ ìœ„ë¡œ ê°€ê¸°">
+                                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 15l7-7 7 7" /></svg>
+                            </button>
+
+                            {/* Quick Nav Toggle (Hamburger Button) */}
+                            <button onClick={() => setIsNavOpen(!isNavOpen)} className={`w-11 h-11 md:w-14 md:h-14 bg-[#064e3b]/90 backdrop-blur-md text-white rounded-full flex flex-col items-center justify-center shadow-xl transition-all duration-500 transform hover:scale-105 active:scale-95 space-y-1 ${isNavOpen ? 'rotate-90' : ''}`} aria-label="ë¹ ë¥¸ ë©”ë‰´ ë°”">
+                                {isNavOpen ? (
+                                    <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                                ) : (
+                                    <React.Fragment>
+                                        <span className="w-5 md:w-6 h-0.5 bg-white rounded-full"></span>
+                                        <span className="w-5 md:w-6 h-0.5 bg-white rounded-full"></span>
+                                        <span className="w-5 md:w-6 h-0.5 bg-white rounded-full"></span>
+                                    </React.Fragment>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Lightbox = ({ images, initialIndex, onClose }) => {
+            const [currentIndex, setCurrentIndex] = useState(initialIndex);
+            
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'Escape') onClose();
+                    if (e.key === 'ArrowRight') nextSlide();
+                    if (e.key === 'ArrowLeft') prevSlide();
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [currentIndex, images]);
+
+            const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+            const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+
+            return (
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-md transition-opacity duration-300">
+                    <button onClick={onClose} className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                    <button onClick={prevSlide} className="absolute left-6 text-white/50 hover:text-white transition-colors p-4"><svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg></button>
+                    <button onClick={nextSlide} className="absolute right-6 text-white/50 hover:text-white transition-colors p-4"><svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg></button>
+                    
+                    <div className="relative w-full max-w-6xl h-[80vh] flex items-center justify-center overflow-hidden px-20">
+                        {images.map((img, idx) => (
+                            <img key={idx} src={img} className={`absolute w-[calc(100%-10rem)] max-h-full object-contain transition-all duration-700 ease-in-out ${idx === currentIndex ? 'opacity-100 scale-100 translate-x-0' : idx < currentIndex ? 'opacity-0 scale-95 -translate-x-full' : 'opacity-0 scale-95 translate-x-full'}`} alt="lightbox detail" />
+                        ))}
+                    </div>
+                    <div className="absolute bottom-10 flex space-x-3">
+                        {images.map((_, idx) => (
+                            <button key={idx} onClick={() => setCurrentIndex(idx)} className={`w-3 h-3 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-white scale-125' : 'bg-white/30 hover:bg-white/60'}`} />
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const DetailPage = ({ post, onBack }) => {
+            const [lightboxIndex, setLightboxIndex] = useState(null);
+            const labels = ['ìž‘ì—… ì „', 'ìž‘ì—… ì¤‘', 'ìž‘ì—… í›„'];
+            const images = post.images || [post.img]; // Fallback if no images array
+
+            useEffect(() => { window.scrollTo(0, 0); }, []);
+
+            return (
+                <div className="pt-28 pb-32 min-h-screen bg-gray-50 font-sans animate-in fade-in slide-in-from-bottom-12 duration-[1500ms] ease-out">
+                    <div className="max-w-5xl mx-auto px-6">
+                        <button onClick={onBack} className="inline-flex items-center text-[#22c55e] font-bold mb-8 hover:text-[#16a34a] transition-colors bg-green-50 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md border border-green-100">
+                            <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                            게시판으로 복귀
+                        </button>
+                        <div className="bg-white rounded-[2.5rem] shadow-[0_12px_40px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden">
+                            <div className="p-8 md:p-12">
+                                <span className="text-[#22c55e] font-black text-xs tracking-widest uppercase">{post.date}</span>
+                                <h1 className="text-3xl md:text-4xl font-black text-gray-900 mt-3 mb-6 leading-tight break-keep">{post.title}</h1>
+                                <div className="w-12 h-1.5 bg-[#22c55e] mb-8 rounded-full"></div>
+                                <p className="text-lg text-gray-600 leading-relaxed font-semibold break-keep whitespace-pre-wrap mb-10">{post.content}</p>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-8 md:px-12 pb-12">
+                                {images.map((img, idx) => (
+                                    <div key={idx} className="relative group cursor-pointer rounded-2xl overflow-hidden shadow-md" onClick={() => setLightboxIndex(idx)}>
+                                        <img src={img} alt={labels[idx] || `?ъ쭊 ${idx+1}`} className="w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                                        <div className="absolute bottom-3 left-3">
+                                            <span className="bg-white/90 text-gray-800 text-xs font-black px-3 py-1.5 rounded-full shadow">{labels[idx] || `?ъ쭊 ${idx+1}`}</span>
+                                        </div>
+                                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="bg-white/80 backdrop-blur-sm rounded-full p-3">
+                                                <svg className="w-6 h-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                    {lightboxIndex !== null && <Lightbox images={images} initialIndex={lightboxIndex} onClose={() => setLightboxIndex(null)} />}
+                </div>
+            );
+        };
+
+        const BoardPage = ({ category, onBack }) => {
+            const readableCategory = category ? category.replace('-', ' ') : 'ì•Œ ìˆ˜ ì—†ìŒ';
+            const [posts, setPosts] = useState([]);
+            const [activeIndex, setActiveIndex] = useState(0);
+            const [detailPost, setDetailPost] = useState(null);
+
+            useEffect(() => {
+                window.scrollTo(0, 0);
+                const mockPosts = [
+                    { id: 1, title: `[${readableCategory}] ì²« ë²ˆì§¸ í”„ë¦¬ë¯¸ì—„ í˜„ìž¥`, content: `ì²´ê³„ì ì¸ ë©”ë‰´ì–¼ê³¼ ê³ ë„í™”ëœ íŠ¹ìˆ˜ ì„¸ì²™ ìž¥ë¹„ë¥¼ í†µí•´ ${readableCategory} ìž‘ì—…ì„ ì„±ê³µì ìœ¼ë¡œ ì™„ìˆ˜í–ˆìŠµë‹ˆë‹¤. ë³´ì´ì§€ ì•ŠëŠ” ìˆ¨ì€ ê³µê°„ì˜ ë””í…Œì¼ê¹Œì§€ ìž¡ì•„ë‚´ëŠ” ë” ì›° ì„œë¹„ìŠ¤ì˜ í”„ë¦¬ë¯¸ì—„ í´ë¦¬ë‹ ì§„ìˆ˜ë¥¼ í™•ì¸í•˜ì‹¤ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.`, date: '2026.03.20', img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1200', images: ['https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800', 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=800', 'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=800'] },
+                    { id: 2, title: `[${readableCategory}] ë‘ ë²ˆì§¸ ë””í…Œì¼ ìž‘ì—… ì™„ë£Œ`, content: `íƒ€í˜‘í•˜ì§€ ì•ŠëŠ” ì™„ë²½í•¨ìœ¼ë¡œ ë‚œì´ë„ ë†’ì€ ê³ ì•• ì‹œê³µì„ ì‚¬ê³  ì—†ì´ ë¬´ì‚¬ížˆ ë§ˆë¬´ë¦¬í–ˆìŠµë‹ˆë‹¤. ë” ì›° ì„œë¹„ìŠ¤ì˜ ì°¨ì›ì´ ë‹¤ë¥¸ ê³µê°„ ì™„ì„±ë„ë¥¼ í˜„ìž¥ ê°¤ëŸ¬ë¦¬ ì‚¬ì§„ì„ í†µí•´ ê³ ê°ë‹˜ë“¤ê»˜ íˆ¬ëª…í•˜ê²Œ ëª¨ë‘ ê³µê°œí•´ ë“œë¦½ë‹ˆë‹¤.`, date: '2026.03.15', img: 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&q=80&w=1200', images: ['https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=800', 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800', 'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=800'] },
+                    { id: 3, title: `[${readableCategory}] ì¹œí™˜ê²½ íŠ¹ìˆ˜ ì•½í’ˆ ì‹œê³µ`, content: `ì¸ì²´ì— ë¬´í•´í•œ ìµœê³ ê¸‰í˜• ì¹œí™˜ê²½ ì•½í’ˆë§Œì„ ì‚¬ìš©í•˜ì—¬ ëˆˆì— ë³´ì´ì§€ ì•ŠëŠ” ì°Œë“  ì˜¤ì—¼ë¬¼ê³¼ ë°”ì´ëŸ¬ìŠ¤ ì„¸ê· ê¹Œì§€ ì™„ë²½ížˆ ë¶„í•´/ë°•ë©¸í–ˆìŠµë‹ˆë‹¤. ê³ ê°ë‹˜ì˜ í˜¸í¡ê¸°ì™€ ê±´ê°•ê¹Œì§€ ìƒê°í•˜ëŠ” ì •ì§í•œ ìž‘ì—… ê²°ê³¼ë¬¼ìž…ë‹ˆë‹¤.`, date: '2026.03.10', img: 'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80&w=1200', images: ['https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=800', 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=800', 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800'] }
+                ];
+                setPosts(mockPosts);
+                setActiveIndex(0);
+            }, [category]);
+
+            const [isModalOpen, setIsModalOpen] = useState(false);
+            const [formData, setFormData] = useState({ title: '', content: '', coverFile: null, detailFiles: [] });
+            const [draggedIdx, setDraggedIdx] = useState(null);
+
+            const handleUpload = (e) => {
+                e.preventDefault();
+                if (!formData.title) return alert('ì œëª©ì„ ìž…ë ¥í•´ì£¼ì„¸ìš”.');
+                
+                let coverImg = `https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200&t=${Date.now()}`;
+                if (formData.coverFile) coverImg = URL.createObjectURL(formData.coverFile);
+                
+                let detailImgs = [...formData.detailFiles].map(f => URL.createObjectURL(f));
+                if (detailImgs.length === 0) detailImgs = [coverImg, coverImg, coverImg];
+
+                const today = new Date();
+                const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
+                
+                const newPost = { 
+                    id: Date.now(), 
+                    title: formData.title, 
+                    content: formData.content || `${readableCategory} í˜„ìž¥ì˜ ëª¨ìŠµì´ ì„±ê³µì ìœ¼ë¡œ ì—…ë¡œë“œë˜ì—ˆìŠµë‹ˆë‹¤.`, 
+                    date: formattedDate, 
+                    img: coverImg,
+                    images: detailImgs
+                };
+                
+                setPosts([newPost, ...posts]);
+                setIsModalOpen(false);
+                setFormData({ title: '', content: '', coverFile: null, detailFiles: [] });
+            };
+
+            const handleDetailFilesChange = (e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    setFormData({ ...formData, detailFiles: [...formData.detailFiles, ...Array.from(e.target.files)] });
+                }
+            };
+
+            const onDragStart = (idx) => setDraggedIdx(idx);
+            const onDragEnter = (idx) => {
+                if (draggedIdx === null || draggedIdx === idx) return;
+                const newFiles = [...formData.detailFiles];
+                const item = newFiles.splice(draggedIdx, 1)[0];
+                newFiles.splice(idx, 0, item);
+                setFormData({ ...formData, detailFiles: newFiles });
+                setDraggedIdx(idx);
+            };
+            const onDragEnd = () => setDraggedIdx(null);
+            
+            const dropFile = (idx) => {
+                const newFiles = [...formData.detailFiles];
+                newFiles.splice(idx, 1);
+                setFormData({ ...formData, detailFiles: newFiles });
+            };
+
+            if (detailPost) {
+                return <DetailPage post={detailPost} onBack={() => setDetailPost(null)} />;
+            }
+            
+            const activePost = posts[activeIndex];
+
+            return (
+                <div className="pt-28 pb-32 min-h-screen bg-gray-50 font-sans animate-in fade-in slide-in-from-bottom-12 duration-[1500ms] ease-out">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <button onClick={onBack} className="inline-flex items-center text-[#22c55e] font-bold mb-8 hover:text-[#16a34a] transition-colors bg-green-50 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md border border-green-100">
+                            <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                            í¬íŠ¸í´ë¦¬ì˜¤ ëŒ€ë¬¸ìœ¼ë¡œ ë³µê·€
+                        </button>
+                        <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-12">
+                            <div><div className="w-16 h-1.5 bg-[#22c55e] rounded-full mb-6"></div><h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">{readableCategory} <span className="font-light text-gray-400">í”„ë¦¬ë¯¸ì—„ ê°¤ëŸ¬ë¦¬</span></h1><p className="text-lg text-gray-500 font-medium">ë” ì›° ì„œë¹„ìŠ¤ì˜ ë…ë³´ì ì¸ ë””í…Œì¼ì„ ë‹´ì€ ì¸í„°ëž™í‹°ë¸Œ í˜„ìž¥ ê¸°ë¡ìž…ë‹ˆë‹¤.</p></div>
+                            <button onClick={() => setIsModalOpen(true)} className="mt-8 md:mt-0 inline-flex items-center justify-center px-8 py-4 bg-gray-900 text-white rounded-xl font-bold shadow-xl hover:bg-[#22c55e] transition-transform transform hover:-translate-y-1 duration-300"><svg className="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4"/></svg>ìƒˆ ê°¤ëŸ¬ë¦¬ ì—…ë¡œë“œ</button>
+                        </div>
+                        {posts.length > 0 && activePost ? (
+                            <div className="bg-white rounded-[2.5rem] shadow-[0_12px_40px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col lg:flex-row h-auto lg:h-[650px] relative group animate-in fade-in zoom-in-95 duration-500">
+                                <div className="w-full lg:w-[60%] h-[400px] lg:h-full relative overflow-hidden bg-gray-900 flex-shrink-0 cursor-pointer" onClick={() => setDetailPost(activePost)}>
+                                    <img key={`img-${activePost.id}`} src={activePost.img} alt={activePost.title} className="absolute inset-0 w-full h-full object-cover animate-luxury-fade transition-transform duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent pointer-events-none"></div>
+                                    <div className="absolute top-8 left-8 z-10"><span className="bg-[#22c55e] text-white text-sm font-black px-4 py-1.5 rounded-md shadow-lg">{readableCategory}</span></div>
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
+                                        <div className="bg-black/50 backdrop-blur-sm rounded-full p-6 text-white transform -translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                            <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                                        </div>
+                                        <p className="mt-4 text-white font-black tracking-widest uppercase">ìžì„¸ížˆ ë³´ê¸°</p>
+                                    </div>
+                                </div>
+                                <div className="w-full lg:w-[40%] flex flex-col h-full bg-white relative">
+                                    <div key={`info-${activePost.id}`} className="p-10 lg:p-12 flex-grow overflow-y-auto animate-luxury-slide custom-scrollbar">
+                                        <span className="text-gray-400 font-extrabold text-sm tracking-widest">{activePost.date}</span>
+                                        <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mt-5 mb-8 leading-tight break-keep">{activePost.title}</h2>
+                                        <div className="w-12 h-1.5 bg-[#22c55e] mb-8 rounded-full"></div>
+                                        <p className="text-lg text-gray-600 leading-relaxed font-semibold break-keep whitespace-pre-wrap">{activePost.content}</p>
+                                    </div>
+                                    <div className="h-40 lg:h-44 bg-gray-50 border-t border-gray-100 p-6 overflow-x-auto flex space-x-5 items-center custom-scrollbar">
+                                        {posts.map((post, idx) => (
+                                            <button key={post.id} onClick={() => setDetailPost(post)} onMouseEnter={() => setActiveIndex(idx)} className={`relative w-28 h-28 lg:w-32 lg:h-32 flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-300 transform outline-none focus:outline-none ${activeIndex === idx ? 'ring-4 ring-[#22c55e] ring-offset-2 scale-105 shadow-xl shadow-[#22c55e]/20 z-10' : 'hover:opacity-100 opacity-60 hover:scale-105 saturate-0 hover:saturate-50 cursor-pointer'}`} title={post.title}>
+                                                <img src={post.img} alt={post.title} className="w-full h-full object-cover" />
+                                                <div className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${activeIndex === idx ? 'opacity-0' : 'opacity-100'}`}></div>
+                                                <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/30"><span className="text-white text-[10px] font-bold bg-[#22c55e] px-2 py-1 rounded">ìƒì„¸ë³´ê¸°</span></div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="py-32 flex flex-col items-center justify-center text-gray-400 bg-white rounded-[2.5rem] border-2 border-dashed border-gray-200 shadow-sm animate-in fade-in duration-500 max-w-4xl mx-auto"><svg className="w-20 h-20 mb-6 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg><p className="text-2xl font-bold text-gray-500 mb-2">ì•„ì§ ê°¤ëŸ¬ë¦¬ ì‚¬ì§„ì´ ì—†ìŠµë‹ˆë‹¤.</p><p className="text-gray-400">ìƒˆ ê°¤ëŸ¬ë¦¬ ì—…ë¡œë“œë¥¼ í†µí•´ í˜„ìž¥ ì‚¬ì§„ì„ ê³µìœ í•´ì£¼ì„¸ìš”.</p></div>
+                        )}
+                        {isModalOpen && (
+                            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto">
+                                <div className="absolute inset-0 bg-gray-900/80 backdrop-blur-sm fixed" onClick={() => setIsModalOpen(false)}></div>
+                                <div className="bg-white rounded-[2.5rem] p-8 md:p-10 w-full max-w-3xl shadow-2xl relative z-10 my-10 animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto custom-scrollbar">
+                                    <button onClick={() => setIsModalOpen(false)} className="absolute top-8 right-8 w-12 h-12 bg-gray-50 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-colors" type="button"><svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                                    <div className="mb-8"><span className="inline-block bg-gray-900 text-white text-xs font-black px-3 py-1.5 rounded-md mb-4 tracking-widest">ADMIN</span><h3 className="text-3xl font-black text-gray-900 mb-2">ìƒˆ í¬íŠ¸í´ë¦¬ì˜¤ í˜„ìž¥ ë“±ë¡</h3><p className="text-gray-500 font-medium">{readableCategory} í˜„ìž¥ì˜ ìƒì„¸ ì´ë¯¸ì§€ì™€ ì •ë³´ë¥¼ ë“±ë¡í•©ë‹ˆë‹¤.</p></div>
+                                    <form onSubmit={handleUpload} className="space-y-6">
+                                        <div><label className="block text-sm font-extrabold text-gray-700 mb-2 ml-1">ê²Œì‹œë¬¼ ì œëª©</label><input type="text" required value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} placeholder="ì˜ˆ: ê°•ë‚¨ ëŒ€í˜• ìŠ¤íŠœë””ì˜¤ ë¶„ì§„ ì œê±° í˜„ìž¥" className="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl px-5 py-4 focus:outline-none focus:ring-4 focus:ring-[#22c55e]/20 focus:border-[#22c55e] transition-all text-gray-900 font-bold placeholder-gray-400" /></div>
+                                        <div><label className="block text-sm font-extrabold text-gray-700 mb-2 ml-1">í˜„ìž¥ ìƒì„¸ í›„ê¸° (ë³¸ë¬¸)</label><textarea rows="3" value={formData.content} onChange={(e) => setFormData({...formData, content: e.target.value})} placeholder="ìž‘ì—… ë‚´ìš©, íŠ¹ë³„ížˆ ì‹ ê²½ ì“´ ë¶€ë¶„ ë“±ì„ ìž‘ì„±í•´ì£¼ì„¸ìš”." className="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl px-5 py-4 focus:outline-none focus:ring-4 focus:ring-[#22c55e]/20 focus:border-[#22c55e] transition-all text-gray-900 font-medium placeholder-gray-400 resize-none"></textarea></div>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {/* Cover File Upload */}
+                                            <div>
+                                                <label className="block text-sm font-extrabold text-gray-700 mb-2 ml-1">í˜„ìž¥ ëŒ€í‘œ ì»¤ë²„ ì¼ëŸ¬ìŠ¤íŠ¸ (1ìž¥)</label>
+                                                <div className="relative w-full h-32">
+                                                    <input type="file" accept="image/*" onChange={(e) => e.target.files[0] && setFormData({...formData, coverFile: e.target.files[0]})} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                                                    <div className={`w-full h-full border-2 border-dashed rounded-2xl flex flex-col items-center justify-center transition-all ${formData.coverFile ? 'border-[#22c55e] bg-green-50' : 'border-gray-200 bg-gray-50 hover:bg-gray-100 hover:border-gray-300'}`}>
+                                                        {formData.coverFile ? <p className="font-bold text-[#22c55e] px-4 truncate">{formData.coverFile.name}</p> : <span className="text-gray-400 font-bold text-sm">ì»¤ë²„ í´ë¦­ ì—…ë¡œë“œ</span>}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Detail Files Upload */}
+                                            <div>
+                                                <label className="block text-sm font-extrabold text-gray-700 mb-2 ml-1">ìƒì„¸ ì „/ì¤‘/í›„ ì‚¬ì§„ (ë‹¤ì¤‘ ì„ íƒ)</label>
+                                                <div className="relative w-full h-32">
+                                                    <input type="file" accept="image/*" multiple onChange={handleDetailFilesChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                                                    <div className="w-full h-full border-2 border-dashed border-gray-200 bg-gray-50 hover:bg-gray-100 hover:border-gray-300 rounded-2xl flex flex-col items-center justify-center transition-all">
+                                                        <span className="text-gray-400 font-bold text-sm text-center px-4">í´ë¦­í•˜ì—¬ <br/>ìƒì„¸ ì‚¬ì§„ ì—¬ëŸ¬ ìž¥ ì¶”ê°€</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        {formData.detailFiles.length > 0 && (
+                                            <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                                <div className="text-xs font-bold text-gray-500 mb-3 ml-1 flex justify-between">
+                                                    <span>ë“œëž˜ê·¸ ì•¤ ë“œë¡­ìœ¼ë¡œ ìˆœì„œë¥¼ ë³€ê²½í•˜ì„¸ìš” (ìž‘ì—… ì „, ì¤‘, í›„ ìˆœì„œ ê²°ì •)</span>
+                                                    <span className="text-[#22c55e]">{formData.detailFiles.length}ìž¥</span>
+                                                </div>
+                                                <div className="flex space-x-3 overflow-x-auto pb-2 custom-scrollbar">
+                                                    {formData.detailFiles.map((file, idx) => (
+                                                        <div key={`${file.name}-${idx}`} draggable onDragStart={() => onDragStart(idx)} onDragEnter={() => onDragEnter(idx)} onDragEnd={onDragEnd} onDragOver={(e) => e.preventDefault()} 
+                                                             className={`relative flex-shrink-0 w-24 h-24 rounded-xl border-2 overflow-hidden cursor-move transition-transform ${draggedIdx === idx ? 'border-[#22c55e] opacity-50' : 'border-transparent'}`}>
+                                                            <img src={URL.createObjectURL(file)} className="w-full h-full object-cover" alt="preview" />
+                                                            <div className="absolute top-0 left-0 w-full bg-black/60 text-white text-[10px] py-1 text-center font-bold">
+                                                                {['ìž‘ì—… ì „', 'ìž‘ì—… ì¤‘', 'ìž‘ì—… í›„'][idx] || `ì¶”ê°€ ${idx+1}`}
+                                                            </div>
+                                                            <button type="button" onClick={() => dropFile(idx)} className="absolute bottom-1 right-1 bg-red-500 text-white rounded-full p-1"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                        
+                                        <div className="pt-4"><button type="submit" className="w-full bg-[#22c55e] text-white font-extrabold text-xl py-5 rounded-xl hover:bg-[#16a34a] transition-all shadow-[0_10px_30px_rgba(34,197,94,0.3)] flex justify-center items-center"><svg className="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"/></svg>í˜„ìž¥ ê¸°ë¡ ë“±ë¡í•˜ê¸°</button></div>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+        function App() {
+            const [page, setPage] = useState('home'); // 'home' or 'board'
+            const [category, setCategory] = useState(null);
+
+            const navigateToBoard = (catId) => {
+                setCategory(catId);
+                setPage('board');
+                window.scrollTo(0, 0);
+            };
+
+            const navigateToHome = (hash = '') => {
+                setPage('home');
+                if (hash) {
+                    setTimeout(() => {
+                        const el = document.getElementById(hash.replace('#', ''));
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                } else {
+                    window.scrollTo(0, 0);
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-white flex flex-col font-sans selection:bg-brand-green selection:text-white">
+                    <Header onNavigate={navigateToHome} isHome={page === 'home'} />
+                    <main className="flex-grow">
+                        {page === 'home' ? (
+                            <React.Fragment>
+                                <Hero onNavigate={navigateToHome} />
+                                <BrandStory />
+                                <TheWellSystem8 />
+                                <Services />
+                                <PortfolioBoard onCategorySelect={navigateToBoard} />
+                                <Reviews />
+                                <QuoteForm />
+                            </React.Fragment>
+                        ) : (
+                            <BoardPage category={category} onBack={() => navigateToHome('portfolio')} />
+                        )}
+                    </main>
+                    
+                    <footer className="bg-gray-900 py-12 text-center text-gray-400">
+                        <div className="max-w-7xl mx-auto px-6">
+                            <p className="mb-4 text-white font-bold text-xl">ë” ì›° ì„œë¹„ìŠ¤</p>
+                            <p className="text-sm text-gray-400 font-medium tracking-wide">ê³µê°„ì˜ ë³¸ì§ˆì„ ì„¸ìš°ê³ , ë¨¸ë¬´ëŠ” ì´ì˜ ê±´ê°•ì„ ì™„ì„±í•©ë‹ˆë‹¤.</p>
+                            <a href="tel:16888740" className="inline-flex items-center gap-2 mt-4 text-[#22c55e] font-bold text-lg tracking-widest hover:text-green-400 transition-colors">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                1688-8740
+                            </a>
+                            <div className="mt-8 pt-8 border-t border-gray-800 text-sm">
+                                &copy; {new Date().getFullYear()} The Well Service. All rights reserved.
+                            </div>
+                        </div>
+                    </footer>
+                    
+                    <QuickMenu onNavigate={navigateToHome} />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
